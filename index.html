@@ -2,231 +2,294 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>بوابة الإدارة التنفيذية والرقابة الإدارية</title>
+  <title>بوابة الرقابة الإدارية والتنفيذية - المدير التنفيذي: محمد سليمان الغانم</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; }
     .card-header { font-weight: bold; }
-    @media print { .no-print { display: none !important; } }
+    .executive-badge { background-color: #1a365d; color: white; padding: 4px 12px; border-radius: 6px; font-size: 0.9rem; }
+    @media print { 
+      .no-print { display: none !important; }
+      body { background-color: white !important; padding: 0 !important; }
+      .card { border: none !important; }
+      .print-header { display: block !important; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+    }
+    .print-header { display: none; }
   </style>
 </head>
-<body class="p-4">
+<body class="p-3 p-md-4">
 <div class="container-fluid">
-  <h2 class="text-center mb-4 text-primary">نظام المتابعة الإدارية وقرارات مجلس الإدارة</h2>
+  
+  <!-- ترويسة النظام -->
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap border-bottom pb-3">
+    <div>
+      <h3 class="text-primary mb-1">نظام الرقابة الإدارية، متابعة المهام، وقرارات المجلس</h3>
+      <span class="executive-badge">المدير التنفيذي: أ. محمد سليمان الغانم</span>
+    </div>
+    <div class="no-print mt-2 mt-md-0">
+      <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">🖨️ طباعة الشاشة الحالية</button>
+    </div>
+  </div>
 
+  <!-- ترويسة مخصصة تظهر فقط عند الطباعة -->
+  <div class="print-header text-center">
+    <h3>تقرير إداري رسمي</h3>
+    <p class="mb-0">تحت إشراف المدير التنفيذي: أ. محمد سليمان الغانم | التاريخ: <span id="printDate"></span></p>
+  </div>
+
+  <!-- التبويبات الرئيسية -->
   <ul class="nav nav-pills mb-4 no-print" id="mainTab" role="tablist">
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#violations">المساءلات والإنذارات</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tasks">متابعة المهام</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#board">قرارات المجلس</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#reports">التقارير الشاملة</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tasks">متابعة المهام التنفيذية</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#board">قرارات مجلس الإدارة</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#reports">التقرير التراكمي الشامل للموظف</button></li>
   </ul>
 
   <div class="tab-content">
+    
+    <!-- 1. شاشة المخالفات والمساءلات -->
     <div class="tab-pane fade show active" id="violations">
       <div class="row">
         <div class="col-md-5 no-print">
-          <div class="card mb-3">
+          <div class="card mb-3 shadow-sm border-danger">
             <div class="card-header bg-danger text-white">تسجيل واقعة / إجراء إداري</div>
             <div class="card-body">
               <form id="violationForm">
                 <div class="mb-2">
-                  <label class="form-label">الموظف:</label>
-                  <select id="v_emp" class="form-select" required>
-                    <option value="أحمد المحمد">أحمد المحمد</option>
-                    <option value="سليمان العلي">سليمان العلي</option>
-                    <option value="خالد ناصر">خالد ناصر</option>
-                  </select>
+                  <label class="form-label">الموظف المعني:</label>
+                  <select id="v_emp" class="form-select" required></select>
                 </div>
                 <div class="mb-2">
-                  <label class="form-label">نوع المخالفة:</label>
+                  <label class="form-label">نوع المخالفة المرصودة:</label>
                   <select id="v_type" class="form-select">
                     <option value="تأخير صباحي">تأخير صباحي</option>
                     <option value="غياب بدون عذر">غياب بدون عذر</option>
+                    <option value="خروج أثناء الدوام بدون إذن">خروج أثناء الدوام بدون إذن</option>
                     <option value="خروج مبكر بدون إذن">خروج مبكر بدون إذن</option>
-                    <option value="خروج أثناء الدوام">خروج أثناء الدوام بدون إذن</option>
                     <option value="مخالفة ضوابط الإجازات">مخالفة ضوابط الإجازات</option>
                   </select>
                 </div>
                 <div class="mb-2">
-                  <label class="form-label">نوع الإجراء (تسلسلي):</label>
+                  <label class="form-label">نوع الإجراء (تسلسلي نظامي):</label>
                   <select id="v_level" class="form-select">
-                    <option value="إنذار شفوي">إنذار شفوي (أولاً)</option>
+                    <option value="إنذار شفوي">إنذار شفوي (أولاً - موثق)</option>
                     <option value="مساءلة إدارية">مساءلة إدارية</option>
                     <option value="إنذار كتابي أول">إنذار كتابي أول</option>
                     <option value="إنذار كتابي نهائي">إنذار كتابي نهائي</option>
                   </select>
                 </div>
-                <button type="submit" class="btn btn-danger w-100">توثيق وإصدار الخطاب</button>
+                <div class="mb-3">
+                  <label class="form-label">ملاحظات / تفاصيل الواقعة:</label>
+                  <textarea id="v_notes" class="form-control" rows="2" placeholder="اكتب تفاصيل إضافية إن وجدت..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger w-100">توثيق الإجراء وإصدار الخطاب</button>
               </form>
             </div>
           </div>
         </div>
         <div class="col-md-7">
-          <div class="card">
-            <div class="card-header bg-dark text-white">سجل الإجراءات والخطابات الصادرة</div>
-            <div class="card-body">
-              <table class="table table-bordered table-striped" id="violationsTable">
-                <thead>
-                  <tr>
-                    <th>الموظف</th>
-                    <th>نوع المخالفة</th>
-                    <th>الإجراء</th>
-                    <th>التاريخ والوقت</th>
-                    <th>الخطاب</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+          <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+              <span>سجل الإجراءات الإدارية الموثقة</span>
+              <span class="badge bg-secondary" id="violationsCount">0 إجراء</span>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped mb-0 text-center" id="violationsTable">
+                  <thead class="table-light">
+                    <tr>
+                      <th>الموظف</th>
+                      <th>نوع المخالفة</th>
+                      <th>الإجراء</th>
+                      <th>اليوم والتاريخ والوقت</th>
+                      <th class="no-print">الخطاب</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- 2. متابعة المهام والتكليفات -->
     <div class="tab-pane fade" id="tasks">
       <div class="row">
         <div class="col-md-4 no-print">
-          <div class="card">
-            <div class="card-header bg-primary text-white">تكليف بمهمة جديدة</div>
+          <div class="card shadow-sm border-primary">
+            <div class="card-header bg-primary text-white">تكليف بمهمة تنفيذية جديدة</div>
             <div class="card-body">
               <form id="taskForm">
                 <div class="mb-2">
-                  <label class="form-label">الموظف المكلف:</label>
-                  <select id="t_emp" class="form-select">
-                    <option value="أحمد المحمد">أحمد المحمد</option>
-                    <option value="سليمان العلي">سليمان العلي</option>
-                    <option value="خالد ناصر">خالد ناصر</option>
-                  </select>
+                  <label class="form-label">المكلف بالمهمة:</label>
+                  <select id="t_emp" class="form-select"></select>
                 </div>
                 <div class="mb-2">
-                  <label class="form-label">وصف المهمة:</label>
-                  <input type="text" id="t_title" class="form-control" required>
+                  <label class="form-label">عنوان المهمة / التكليف:</label>
+                  <input type="text" id="t_title" class="form-control" required placeholder="وصف المهمة المطلوبة...">
                 </div>
-                <button type="submit" class="btn btn-primary w-100">إرسال التكليف</button>
+                <div class="mb-3">
+                  <label class="form-label">تاريخ التسليم المستهدف:</label>
+                  <input type="date" id="t_due" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">إرسال التكليف التنفيذي</button>
               </form>
             </div>
           </div>
         </div>
         <div class="col-md-8">
-          <div class="card">
-            <div class="card-header bg-dark text-white">جدول متابعة المهام والإنجاز</div>
-            <div class="card-body">
-              <table class="table table-bordered" id="tasksTable">
-                <thead>
-                  <tr>
-                    <th>المهمة</th>
-                    <th>المكلف</th>
-                    <th>إثبات الإنجاز</th>
-                    <th>الحالة</th>
-                    <th>الإجراء (المدير)</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+          <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">جدول متابعة المهام والمستندات التنفيذية</div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-bordered mb-0 text-center" id="tasksTable">
+                  <thead class="table-light">
+                    <tr>
+                      <th>المهمة</th>
+                      <th>الموظف المكلف</th>
+                      <th>إثبات الإنجاز</th>
+                      <th>الحالة</th>
+                      <th class="no-print">اعتماد المدير التنفيذي</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- 3. قرارات مجلس الإدارة -->
     <div class="tab-pane fade" id="board">
       <div class="row mb-3">
         <div class="col-md-4 no-print">
-          <div class="card">
-            <div class="card-header bg-success text-white">إدراج قرار مجلس إدارة</div>
+          <div class="card shadow-sm border-success">
+            <div class="card-header bg-success text-white">إدراج وتكليف بقرار مجلس إدارة</div>
             <div class="card-body">
               <form id="boardForm">
                 <div class="mb-2">
                   <label class="form-label">رقم الجلسة / القرار:</label>
-                  <input type="text" id="b_num" class="form-control" required placeholder="مثال: جلسة 03 / قرار 12">
+                  <input type="text" id="b_num" class="form-control" required placeholder="مثال: الجلسة (4) قرار رقم (2)">
                 </div>
                 <div class="mb-2">
-                  <label class="form-label">نص القرار:</label>
-                  <textarea id="b_text" class="form-control" required></textarea>
+                  <label class="form-label">نص القرار وتوجيه المجلس:</label>
+                  <textarea id="b_text" class="form-control" rows="3" required placeholder="نص القرار المطلوب تنفيذه..."></textarea>
                 </div>
-                <div class="mb-2">
+                <div class="mb-3">
                   <label class="form-label">الموظف المسؤول عن التنفيذ:</label>
-                  <select id="b_emp" class="form-select">
-                    <option value="أحمد المحمد">أحمد المحمد</option>
-                    <option value="سليمان العلي">سليمان العلي</option>
-                    <option value="خالد ناصر">خالد ناصر</option>
-                  </select>
+                  <select id="b_emp" class="form-select"></select>
                 </div>
-                <button type="submit" class="btn btn-success w-100">حفظ القرار</button>
+                <button type="submit" class="btn btn-success w-100">حفظ وتكليف الموظف</button>
               </form>
             </div>
           </div>
         </div>
         <div class="col-md-8">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <span>متابعة تنفيذ قرارات المجلس</span>
-              <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">طباعة تقرير المجلس</button>
+          <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom">
+              <span class="fw-bold">تقرير إنجاز قرارات مجلس الإدارة</span>
+              <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">🖨️ طباعة تقرير المجلس</button>
             </div>
             <div class="card-body">
-              <div class="alert alert-info">
-                <strong>نسبة الإنجاز الشاملة للقرارات: </strong>
-                <span id="boardCompletionRate">0%</span>
+              <div class="alert alert-success d-flex justify-content-between align-items-center mb-3">
+                <span><strong>نسبة الإنجاز الشاملة للقرارات: </strong><span id="boardCompletionRate">0%</span></span>
+                <span id="boardSummaryCounts"></span>
               </div>
-              <table class="table table-hover" id="boardTable">
-                <thead>
-                  <tr>
-                    <th>رقم القرار</th>
-                    <th>نص القرار</th>
-                    <th>المسؤول</th>
-                    <th>الحالة</th>
-                    <th>اعتماد الإنجاز</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table table-hover table-bordered text-center" id="boardTable">
+                  <thead class="table-light">
+                    <tr>
+                      <th>رقم القرار</th>
+                      <th>نص القرار</th>
+                      <th>المسؤول عن التنفيذ</th>
+                      <th>الحالة</th>
+                      <th class="no-print">اعتماد الإنجاز</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- 4. التقارير التراكمية وسجل الموظف -->
     <div class="tab-pane fade" id="reports">
-      <div class="card">
-        <div class="card-header bg-secondary text-white d-flex justify-content-between">
-          <span>التقرير التراكمي وإنجازات الموظف</span>
-          <button onclick="window.print()" class="btn btn-light btn-sm no-print">طباعة التقرير</button>
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+          <span>التقرير التراكمي الشامل لأداء والتزام الموظف</span>
+          <button onclick="window.print()" class="btn btn-light btn-sm no-print">🖨️ طباعة ملف الموظف</button>
         </div>
         <div class="card-body">
           <div class="row mb-3 no-print">
-            <div class="col-md-4">
-              <select id="rep_emp_select" class="form-select" onchange="renderEmployeeReport()">
-                <option value="أحمد المحمد">أحمد المحمد</option>
-                <option value="سليمان العلي">سليمان العلي</option>
-                <option value="خالد ناصر">خالد ناصر</option>
-              </select>
+            <div class="col-md-5">
+              <label class="form-label fw-bold">اختر الموظف لاستعراض ملفه الكامل:</label>
+              <select id="rep_emp_select" class="form-select" onchange="renderEmployeeReport()"></select>
             </div>
           </div>
           <div id="employeeReportArea" class="p-3 border rounded bg-white"></div>
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // قائمة موظفي الجمعية المعتمدة
+  const employeesList = [
+    { name: "خليفه علي الحصنان", role: "مدير مشاريع" },
+    { name: "طلال عبدالله الحربي", role: "باحث اجتماعي" },
+    { name: "حنان نفاع الحربي", role: "باحثة اجتماعية" },
+    { name: "فهد حمد العلوي", role: "مشرف تقني" },
+    { name: "محمد غازي المطرفي", role: "مدير تنمية موارد وأخصائي حوكمة ومسؤول مستودع" },
+    { name: "محمد ضيف الله المطرفي", role: "محاسب" },
+    { name: "أحمد محمد البكاوي", role: "عامل شحن وتفريغ" }
+  ];
+
   let disciplinaryData = [];
   let tasksData = [];
   let boardData = [];
 
+  // تهيئة القوائم المنسدلة بالموظفين
+  function initEmployeeSelects() {
+    const selects = ['v_emp', 't_emp', 'b_emp', 'rep_emp_select'];
+    selects.forEach(selId => {
+      const el = document.getElementById(selId);
+      el.innerHTML = '';
+      employeesList.forEach(emp => {
+        el.innerHTML += `<option value="${emp.name}">${emp.name} (${emp.role})</option>`;
+      });
+    });
+    document.getElementById('printDate').innerText = new Date().toLocaleDateString('ar-SA');
+  }
+
+  // 1. إدارة المخالفات والمساءلات
   document.getElementById('violationForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const now = new Date();
     const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    const empName = document.getElementById('v_emp').value;
+    const empObj = employeesList.find(x => x.name === empName);
+
     const item = {
-      emp: document.getElementById('v_emp').value,
+      emp: empName,
+      role: empObj ? empObj.role : '',
       type: document.getElementById('v_type').value,
       level: document.getElementById('v_level').value,
+      notes: document.getElementById('v_notes').value,
       day: days[now.getDay()],
       date: now.toISOString().split('T')[0],
       time: now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
     };
+
     disciplinaryData.push(item);
     renderViolations();
     renderEmployeeReport();
@@ -239,30 +302,60 @@
     disciplinaryData.forEach(d => {
       tbody.innerHTML += `
         <tr>
-          <td>${d.emp}</td>
+          <td class="text-end"><strong>${d.emp}</strong><br><small class="text-muted">${d.role}</small></td>
           <td>${d.type}</td>
           <td><span class="badge ${d.level.includes('شفوي') ? 'bg-warning text-dark' : 'bg-danger'}">${d.level}</span></td>
-          <td>${d.day} ${d.date} (${d.time})</td>
-          <td><button class="btn btn-sm btn-outline-secondary" onclick="alert('خطاب رسمي: تم إشعار الموظف (${d.emp}) بإجراء [${d.level}] لمخالفة [${d.type}] يوم ${d.day} الموافق ${d.date}')">عرض الخطاب</button></td>
+          <td>${d.day} ${d.date}<br><small class="text-muted">${d.time}</small></td>
+          <td class="no-print">
+            <button class="btn btn-sm btn-outline-danger" onclick="showFormalLetter('${d.emp}', '${d.role}', '${d.level}', '${d.type}', '${d.day}', '${d.date}', '${d.time}', '${d.notes || ''}')">عرض الخطاب</button>
+          </td>
         </tr>`;
     });
+    document.getElementById('violationsCount').innerText = `${disciplinaryData.length} إجراء`;
   }
 
+  function showFormalLetter(emp, role, level, type, day, date, time, notes) {
+    const letter = `
+=============================================
+إشعار إداري رسمي: [${level}]
+=============================================
+إلى الموظف: ${emp}
+المسمى الوظيفي: ${role}
+
+السلام عليكم ورحمة الله وبركاته،،
+نظراً لرصد مخالفة (${type}) في يوم ${day} الموافق ${date} عند الساعة (${time})،
+${notes ? 'الملاحظات: ' + notes + '\n' : ''}
+عليه تم تقييد هذا الإجراء الإداري رسمياً في سجلك الوظيفي للمتابعة والالتزام بالأنظمة مستقبلاً.
+
+المدير التنفيذي:
+أ. محمد سليمان الغانم
+التوقيع: .....................
+=============================================`;
+    alert(letter);
+  }
+
+  // 2. إدارة التكليفات والمهام
   document.getElementById('taskForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    const empName = document.getElementById('t_emp').value;
+    const empObj = employeesList.find(x => x.name === empName);
+
     tasksData.push({
       id: Date.now(),
-      emp: document.getElementById('t_emp').value,
+      emp: empName,
+      role: empObj ? empObj.role : '',
       title: document.getElementById('t_title').value,
+      dueDate: document.getElementById('t_due').value || 'غير محدد',
       proof: '',
       status: 'قيد التنفيذ'
     });
+
     renderTasks();
     this.reset();
   });
 
   function uploadProof(id) {
-    const link = prompt('أدخل رابط المستند أو إثبات الإنجاز (Drive / ملف):');
+    const link = prompt('أدخل رابط المستند أو إثبات الإنجاز (رابط سحابي / Drive / مستند):');
     if (link) {
       const t = tasksData.find(x => x.id === id);
       t.proof = link;
@@ -283,15 +376,18 @@
     tasksData.forEach(t => {
       tbody.innerHTML += `
         <tr>
-          <td>${t.title}</td>
-          <td>${t.emp}</td>
-          <td>${t.proof ? `<a href="${t.proof}" target="_blank">معاينة الإثبات</a>` : '<button class="btn btn-sm btn-link" onclick="uploadProof('+t.id+')">رفع إثبات</button>'}</td>
+          <td class="text-end"><strong>${t.title}</strong><br><small class="text-muted">تاريخ التسليم: ${t.dueDate}</small></td>
+          <td>${t.emp}<br><small class="text-muted">${t.role}</small></td>
+          <td>${t.proof ? `<a href="${t.proof}" target="_blank" class="btn btn-sm btn-outline-info">معاينة الإثبات ↗</a>` : '<button class="btn btn-sm btn-link" onclick="uploadProof('+t.id+')">+ إضافة مستند الإنجاز</button>'}</td>
           <td><span class="badge ${t.status === 'تم الإنجاز' ? 'bg-success' : 'bg-warning text-dark'}">${t.status}</span></td>
-          <td>${t.status !== 'تم الإنجاز' ? `<button class="btn btn-sm btn-success" onclick="approveTask(${t.id})">اعتماد كمنجز</button>` : 'معتمد'}</td>
+          <td class="no-print">
+            ${t.status !== 'تم الإنجاز' ? `<button class="btn btn-sm btn-success" onclick="approveTask(${t.id})">اعتماد كمنجز ✓</button>` : '<span class="text-success fw-bold">معتمد وموثق</span>'}
+          </td>
         </tr>`;
     });
   }
 
+  // 3. إدارة قرارات المجلس
   document.getElementById('boardForm').addEventListener('submit', function(e) {
     e.preventDefault();
     boardData.push({
@@ -319,52 +415,113 @@
       if(b.status === 'تم الإنجاز') completed++;
       tbody.innerHTML += `
         <tr>
-          <td>${b.num}</td>
-          <td>${b.text}</td>
+          <td><strong class="text-primary">${b.num}</strong></td>
+          <td class="text-end">${b.text}</td>
           <td>${b.emp}</td>
           <td><span class="badge ${b.status === 'تم الإنجاز' ? 'bg-success' : 'bg-secondary'}">${b.status}</span></td>
-          <td>${b.status !== 'تم الإنجاز' ? `<button class="btn btn-sm btn-success" onclick="approveBoardDecision(${b.id})">اعتماد الإنجاز</button>` : 'منجز'}</td>
+          <td class="no-print">
+            ${b.status !== 'تم الإنجاز' ? `<button class="btn btn-sm btn-success" onclick="approveBoardDecision(${b.id})">اعتماد الإنجاز ✓</button>` : '<span class="text-success fw-bold">منجز رسمياً</span>'}
+          </td>
         </tr>`;
     });
+
     const rate = boardData.length ? Math.round((completed / boardData.length) * 100) : 0;
-    document.getElementById('boardCompletionRate').innerText = `${rate}% (تم إنجاز ${completed} من أصل ${boardData.length})`;
+    document.getElementById('boardCompletionRate').innerText = `${rate}%`;
+    document.getElementById('boardSummaryCounts').innerText = `المنجز: ${completed} | المتبقي: ${boardData.length - completed} | الإجمالي: ${boardData.length}`;
   }
 
+  // 4. تقرير الموظف التراكمي
   function renderEmployeeReport() {
     const selectedEmp = document.getElementById('rep_emp_select').value;
+    const empObj = employeesList.find(x => x.name === selectedEmp);
     const empViolations = disciplinaryData.filter(d => d.emp === selectedEmp);
     const oralCount = empViolations.filter(d => d.level === 'إنذار شفوي').length;
-    const otherCount = empViolations.length - oralCount;
+    const writtenCount = empViolations.length - oralCount;
     const completedTasks = tasksData.filter(t => t.emp === selectedEmp && t.status === 'تم الإنجاز');
 
     let html = `
-      <div class="row">
-        <div class="col-md-6">
-          <h5>ملف الأداء والالتزام: <strong>${selectedEmp}</strong></h5>
-          <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between align-items-center">عدد الإنذارات الشفوية: <span class="badge bg-warning text-dark rounded-pill">${oralCount}</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">المساءلات والإنذارات الخطية: <span class="badge bg-danger rounded-pill">${otherCount}</span></li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">المهام المعتمدة المنجزة: <span class="badge bg-success rounded-pill">${completedTasks.length}</span></li>
-          </ul>
+      <div class="row align-items-center mb-3">
+        <div class="col-md-7">
+          <h4 class="mb-1 text-primary">الموظف: <strong>${selectedEmp}</strong></h4>
+          <p class="text-muted mb-0">المسمى الوظيفي: <strong>${empObj ? empObj.role : ''}</strong></p>
         </div>
-        <div class="col-md-6">
-          <h6>سجل المنجزات المعتمدة:</h6>
-          <ol class="list-group list-group-numbered mb-3">
-            ${completedTasks.map(t => `<li class="list-group-item">${t.title}${t.proof ? `(<a href="${t.proof}" target="_blank">المستند</a>)` : ''}</li>`).join('') || '<li class="list-group-item text-muted">لا توجد منجزات معتمدة بعد</li>'}
-          </ol>
+        <div class="col-md-5 text-md-start">
+          <span class="badge bg-light text-dark border p-2">المدير التنفيذي المعتمد: أ. محمد سليمان الغانم</span>
         </div>
       </div>
-      <h6>سجل المخالفات الزمني:</h6>
-      <table class="table table-sm table-bordered">
-        <thead><tr><th>الإجراء</th><th>النوع</th><th>اليوم والتاريخ</th><th>الوقت</th></tr></thead>
-        <tbody>
-          ${empViolations.map(v => `<tr><td>${v.level}</td><td>${v.type}</td><td>${v.day} ${v.date}</td><td>${v.time}</td></tr>`).join('') || '<tr><td colspan="4" class="text-center text-muted">السجل نظيف</td></tr>'}
-        </tbody>
-      </table>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="border rounded p-3 text-center bg-light">
+            <h6 class="text-muted">الإنذارات الشفوية الموثقة</h6>
+            <h2 class="text-warning mb-0">${oralCount}</h2>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="border rounded p-3 text-center bg-light">
+            <h6 class="text-muted">المساءلات والإنذارات الخطية</h6>
+            <h2 class="text-danger mb-0">${writtenCount}</h2>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="border rounded p-3 text-center bg-light">
+            <h6 class="text-muted">إجمالي المهام المنجزة المعتمدة</h6>
+            <h2 class="text-success mb-0">${completedTasks.length}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="card h-100 border-success">
+            <div class="card-header bg-success text-white">سجل منجزات الموظف المعتمدة</div>
+            <div class="card-body">
+              <ol class="list-group list-group-numbered list-group-flush">
+                ${completedTasks.map(t => `<li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">${t.title}</div>${t.proof ? `<a href="${t.proof}" target="_blank" class="small text-primary">معاينة وثيقة الإثبات ↗</a>` : '<small class="text-muted">بدون مرفق</small>'}
+                    </div>
+                  </li>`).join('') || '<li class="list-group-item text-muted text-center">لا توجد مهام منجزة ومعتمدة حتى الآن</li>'}
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <div class="card h-100 border-danger">
+            <div class="card-header bg-danger text-white">سجل المساءلات والإنذارات الزمني</div>
+            <div class="card-body p-0">
+              <table class="table table-sm table-striped text-center mb-0">
+                <thead>
+                  <tr>
+                    <th>الإجراء</th>
+                    <th>المخالفة</th>
+                    <th>اليوم والتاريخ</th>
+                    <th>الوقت</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${empViolations.map(v => `
+                    <tr>
+                      <td><span class="badge ${v.level.includes('شفوي') ? 'bg-warning text-dark' : 'bg-danger'}">${v.level}</span></td>
+                      <td>${v.type}</td>
+                      <td>${v.day}${v.date}</td>
+                      <td>${v.time}</td>
+                    </tr>
+                  `).join('') || '<tr><td colspan="4" class="text-center text-muted p-3">السجل الإداري نظيف - لا توجد إجراءات</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     `;
+
     document.getElementById('employeeReportArea').innerHTML = html;
   }
 
+  // تشغيل التهيئة عند بدء التشغيل
+  initEmployeeSelects();
   renderEmployeeReport();
 </script>
 </body>
