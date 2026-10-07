@@ -9,27 +9,80 @@
     .card-header { font-weight: bold; }
     .executive-badge { background-color: #1a365d; color: white; padding: 4px 12px; border-radius: 6px; font-size: 0.9rem; }
     
-    /* تنسيق الخطاب الرسمي للطباعة بمقاس A4 */
+    #sigCanvas {
+      border: 2px dashed #94a3b8;
+      border-radius: 6px;
+      background-color: #fff;
+      touch-action: none;
+      cursor: crosshair;
+      width: 100%;
+      height: 160px;
+    }
+
+    /* تصميم الخطاب الرسمي وفق الكليشة المعتمدة */
     .official-letter {
       background: #fff;
-      border: 2px solid #2d3748;
+      border: 1px solid #cbd5e1;
       border-radius: 4px;
-      padding: 40px;
+      padding: 40px 50px 30px 50px;
       margin: auto;
-      max-width: 800px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      max-width: 850px;
+      min-height: 1050px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 0 15px rgba(0,0,0,0.06);
       position: relative;
     }
-    .letter-header {
+
+    /* الكليشة العلوية الرسمية */
+    .letter-header-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1fr;
+      align-items: center;
       border-bottom: 2px solid #1a365d;
-      padding-bottom: 15px;
+      padding-bottom: 12px;
       margin-bottom: 20px;
     }
-    .stamp-box {
+    .org-details h6 { font-weight: 800; color: #1a365d; margin-bottom: 2px; }
+    .org-details p { font-size: 0.75rem; margin-bottom: 1px; color: #334155; }
+
+    .logo-container {
+      text-align: center;
+    }
+    .official-logo-img {
+      max-height: 85px;
+      max-width: 100px;
+      object-fit: contain;
+    }
+
+    .meta-details {
+      font-size: 0.82rem;
+      color: #0f172a;
+      line-height: 1.7;
+    }
+
+    /* تذييل الكليشة الرسمي */
+    .letter-footer {
+      border-top: 2px solid #1a365d;
+      padding-top: 10px;
+      margin-top: 30px;
+      font-size: 0.8rem;
+      color: #334155;
+      text-align: center;
+    }
+
+    .signature-img, .stamp-img {
+      max-height: 110px;
+      max-width: 160px;
+      object-fit: contain;
+    }
+
+    .default-stamp {
       border: 3px double #1a365d;
       border-radius: 50%;
-      width: 140px;
-      height: 140px;
+      width: 130px;
+      height: 130px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -40,10 +93,6 @@
       font-weight: bold;
       transform: rotate(-10deg);
       margin: auto;
-      box-shadow: 0 0 4px rgba(26,54,93,0.3);
-    }
-    .signature-area {
-      margin-top: 35px;
     }
 
     @media print {
@@ -60,34 +109,32 @@
       .modal-dialog { max-width: 100% !important; margin: 0 !important; }
       .modal-content { border: none !important; box-shadow: none !important; }
       .no-print, .btn-close, .modal-footer { display: none !important; }
-      .official-letter { border: 2px solid #000 !important; box-shadow: none !important; padding: 25px !important; }
+      .official-letter { border: none !important; box-shadow: none !important; padding: 20px 30px !important; min-height: 100vh; }
     }
   </style>
 </head>
 <body class="p-3 p-md-4">
 <div class="container-fluid">
   
-  <!-- ترويسة النظام -->
   <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap border-bottom pb-3">
     <div>
       <h3 class="text-primary mb-1">جمعية النبهانية للخدمات الإنسانية والاجتماعية</h3>
       <span class="executive-badge">المدير التنفيذي: أ. محمد سليمان الغانم</span>
     </div>
-    <div class="no-print mt-2 mt-md-0">
-      <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">🖨️ طباعة الشاشة الحالية</button>
+    <div class="no-print mt-2 mt-md-0 d-flex gap-2">
+      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settingsModal">⚙️ إعدادات التوقيع والختم</button>
+      <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">🖨️ طباعة</button>
     </div>
   </div>
 
-  <!-- التبويبات -->
   <ul class="nav nav-pills mb-4 no-print" id="mainTab" role="tablist">
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#violations">المساءلات والإنذارات</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tasks">متابعة المهام التنفيذية</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#board">قرارات مجلس الإدارة</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#reports">التقرير التراكمي الشامل للموظف</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#reports">التقرير التراكمي الشامل</button></li>
   </ul>
 
   <div class="tab-content">
-    
     <!-- 1. شاشة المخالفات والمساءلات -->
     <div class="tab-pane fade show active" id="violations">
       <div class="row">
@@ -100,7 +147,6 @@
                   <label class="form-label">الموظف المعني:</label>
                   <select id="v_emp" class="form-select" required></select>
                 </div>
-                
                 <div class="mb-2">
                   <label class="form-label">نوع المخالفة المرصودة:</label>
                   <select id="v_type" class="form-select">
@@ -111,7 +157,6 @@
                     <option value="مخالفة ضوابط الإجازات">مخالفة ضوابط الإجازات</option>
                   </select>
                 </div>
-
                 <div class="mb-2">
                   <label class="form-label">نوع الإجراء (تسلسلي نظامي):</label>
                   <select id="v_level" class="form-select">
@@ -121,8 +166,6 @@
                     <option value="إنذار كتابي نهائي">إنذار كتابي نهائي</option>
                   </select>
                 </div>
-
-                <!-- توثيق وقت المخالفة الفعلي -->
                 <div class="row g-2 mb-2 p-2 bg-light border rounded">
                   <div class="col-12"><small class="text-danger fw-bold">تحديد توقيت حدوث المخالفة الفعلي:</small></div>
                   <div class="col-md-7">
@@ -134,18 +177,15 @@
                     <input type="time" id="v_event_time" class="form-control form-control-sm" required>
                   </div>
                 </div>
-
                 <div class="mb-3">
                   <label class="form-label">تفاصيل ومبررات المخالفة:</label>
                   <textarea id="v_notes" class="form-control" rows="2" placeholder="اكتب تفاصيل إضافية إن وجدت..."></textarea>
                 </div>
-                
-                <button type="submit" class="btn btn-danger w-100">توثيق الإجراء وإصدار الخطاب الرسمي</button>
+                <button type="submit" class="btn btn-danger w-100">توثيق الإجراء وإصدار الخطاب بالكليشة الرسمية</button>
               </form>
             </div>
           </div>
         </div>
-
         <div class="col-md-7">
           <div class="card shadow-sm">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
@@ -162,8 +202,8 @@
                       <th>المخالفة</th>
                       <th>الإجراء</th>
                       <th>توقيت المخالفة</th>
-                      <th>تاريخ الرصد والإصدار</th>
-                      <th class="no-print">الخطاب</th>
+                      <th>تاريخ الرصد</th>
+                      <th class="no-print">معاينة وطباعة</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -180,7 +220,7 @@
       <div class="row">
         <div class="col-md-4 no-print">
           <div class="card shadow-sm border-primary">
-            <div class="card-header bg-primary text-white">تكليف بمهمة تنفيذية جديدة</div>
+            <div class="card-header bg-primary text-white">تكليف بمهمة جديدة</div>
             <div class="card-body">
               <form id="taskForm">
                 <div class="mb-2">
@@ -188,7 +228,7 @@
                   <select id="t_emp" class="form-select"></select>
                 </div>
                 <div class="mb-2">
-                  <label class="form-label">عنوان المهمة / التكليف:</label>
+                  <label class="form-label">عنوان المهمة:</label>
                   <input type="text" id="t_title" class="form-control" required placeholder="وصف المهمة...">
                 </div>
                 <div class="mb-3">
@@ -202,7 +242,7 @@
         </div>
         <div class="col-md-8">
           <div class="card shadow-sm">
-            <div class="card-header bg-dark text-white">جدول متابعة المهام والمستندات التنفيذية</div>
+            <div class="card-header bg-dark text-white">جدول متابعة المهام والإنجاز</div>
             <div class="card-body p-0">
               <div class="table-responsive">
                 <table class="table table-bordered mb-0 text-center" id="tasksTable">
@@ -212,7 +252,7 @@
                       <th>المكلف</th>
                       <th>إثبات الإنجاز</th>
                       <th>الحالة</th>
-                      <th class="no-print">اعتماد الإنجاز</th>
+                      <th class="no-print">الاعتماد</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -241,7 +281,7 @@
                   <textarea id="b_text" class="form-control" rows="3" required placeholder="نص القرار..."></textarea>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">الموظف المسؤول عن التنفيذ:</label>
+                  <label class="form-label">المسؤول عن التنفيذ:</label>
                   <select id="b_emp" class="form-select"></select>
                 </div>
                 <button type="submit" class="btn btn-success w-100">حفظ القرار وتكليف الموظف</button>
@@ -252,8 +292,8 @@
         <div class="col-md-8">
           <div class="card shadow-sm">
             <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom">
-              <span class="fw-bold">تقرير إنجاز قرارات مجلس الإدارة</span>
-              <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">🖨️ طباعة تقرير المجلس</button>
+              <span class="fw-bold">تقرير إنجاز قرارات المجلس</span>
+              <button onclick="window.print()" class="btn btn-outline-dark btn-sm no-print">🖨️ طباعة التقرير</button>
             </div>
             <div class="card-body">
               <div class="alert alert-success d-flex justify-content-between align-items-center mb-3">
@@ -290,7 +330,7 @@
         <div class="card-body">
           <div class="row mb-3 no-print">
             <div class="col-md-5">
-              <label class="form-label fw-bold">اختر الموظف لعرض سجله التراكمي:</label>
+              <label class="form-label fw-bold">اختر الموظف:</label>
               <select id="rep_emp_select" class="form-select" onchange="renderEmployeeReport()"></select>
             </div>
           </div>
@@ -298,109 +338,163 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- نافذة عرض الخطاب الرسمي المجهز للطباعة -->
-<div class="modal fade" id="formalLetterModal" tabindex="-1" aria-hidden="true">
+<!-- نافذة إعدادات التوقيع والختم والشعار -->
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header no-print">
-        <h5 class="modal-title">معاينة الخطاب الرسمي المعتمد</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header">
+        <h5 class="modal-title">⚙️ تخصيص توقيع المدير التنفيذي وختم الجمعية والشعار</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body p-4">
-        <div class="official-letter" id="letterPrintArea">
-          
-          <!-- ترويسة الخطاب الرسمية المعتمدة -->
-          <div class="letter-header d-flex justify-content-between align-items-start">
-            <div class="text-end">
-              <h5 class="mb-1 text-primary fw-bold">المملكة العربية السعودية</h5>
-              <h6 class="mb-1 fw-bold">جمعية النبهانية للخدمات الإنسانية والاجتماعية</h6>
-              <small class="text-muted">مسجلة بالمركز الوطني لتنمية القطاع غير الربحي</small>
+      <div class="modal-body">
+        <div class="row g-4">
+          <div class="col-md-6 border-start">
+            <h6 class="fw-bold text-primary mb-2">1. توقيع المدير التنفيذي</h6>
+            <p class="small text-muted mb-2">وقّع هنا بالإصبع أو الماوس مباشرة:</p>
+            <canvas id="sigCanvas"></canvas>
+            <div class="d-flex gap-2 my-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearSignature()">مسح التوقيع</button>
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="saveDrawnSignature()">حفظ التوقيع المرسوم</button>
             </div>
-            <div class="text-start bg-light p-2 border rounded" style="min-width: 220px;">
-              <p class="mb-1"><strong>رقم الصادر:</strong> <span id="let_ref" class="text-danger fw-bold"></span></p>
-              <p class="mb-1"><strong>تاريخ الخطاب:</strong> <span id="let_issue_date"></span></p>
-              <p class="mb-0"><strong>يوم الخطاب:</strong> <span id="let_issue_day"></span></p>
-            </div>
+            <hr>
+            <label class="form-label small fw-bold">أو ارفع صورة التوقيع جاهزة (PNG شفاف):</label>
+            <input type="file" id="sigFileInput" class="form-control form-control-sm" accept="image/*" onchange="handleFileUpload(event, 'saved_signature')">
           </div>
 
-          <!-- عنوان الخطاب -->
-          <div class="text-center my-3">
-            <h4 class="fw-bold text-decoration-underline" id="let_title">إشعار إداري رسمي</h4>
-          </div>
-
-          <!-- نص الخطاب -->
-          <div class="letter-content my-3 fs-6" style="line-height: 1.9;">
-            <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span id="let_emp" class="fw-bold"></span> المحترم/ـة</p>
-            <p class="mb-3"><strong>المسمى الوظيفي:</strong> <span id="let_role"></span></p>
-            <p>السلام عليكم ورحمة الله وبركاته،،،</p>
-            
-            <p id="let_body"></p>
-
-            <!-- جدول توثيق توقيت الواقعة مقابل توقيت الرصد الفعلي -->
-            <table class="table table-sm table-bordered text-center my-3">
-              <thead class="table-light">
-                <tr>
-                  <th>بيان الواقعة</th>
-                  <th>اليوم</th>
-                  <th>التاريخ</th>
-                  <th>الوقت</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>توقيت حدوث المخالفة</strong></td>
-                  <td id="let_event_day"></td>
-                  <td id="let_event_date"></td>
-                  <td id="let_event_time"></td>
-                </tr>
-                <tr class="table-warning">
-                  <td><strong>توقيت الرصد الفعلي وإصدار الخطاب</strong></td>
-                  <td id="let_audit_day"></td>
-                  <td id="let_audit_date"></td>
-                  <td id="let_audit_time"></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div id="let_notes_box" class="p-2 bg-light border rounded mb-3" style="display:none;">
-              <strong>تفاصيل وملاحظات إضافية:</strong>
-              <div id="let_notes"></div>
+          <div class="col-md-6">
+            <h6 class="fw-bold text-success mb-2">2. ختم الجمعية الرسمي</h6>
+            <p class="small text-muted mb-2">ارفع صورة الختم الرسمي للجمعية:</p>
+            <input type="file" id="stampFileInput" class="form-control form-control-sm mb-3" accept="image/*" onchange="handleFileUpload(event, 'saved_stamp')">
+            <div class="p-3 border rounded text-center bg-light">
+              <span class="small d-block text-muted mb-2">معاينة الختم المعتمد حالياً:</span>
+              <div id="stampPreviewArea" class="d-flex justify-content-center"></div>
             </div>
-
-            <p>نأمل منكم التقيد والالتزام التام بالتعليمات واللوائح المنظمة للعمل؛ علماً بأن تكرار المخالفة يستوجب تطبيق الإجراءات النظامية التصاعدية المعتمدة في اللائحة التنفيذية للموارد البشرية.</p>
-            <p class="text-center mt-2"><strong>شاكرين لكم حسن تعاونكم واهتمامكم،،،</strong></p>
+            <hr>
+            <h6 class="fw-bold text-dark mb-1">3. شعار الجمعية في الكليشة (اختياري)</h6>
+            <input type="file" id="logoFileInput" class="form-control form-control-sm" accept="image/*" onchange="handleFileUpload(event, 'saved_custom_logo')">
           </div>
-
-          <!-- منطقة التوقيع والختم -->
-          <div class="row signature-area align-items-center pt-3 border-top">
-            <div class="col-6 text-center">
-              <h6 class="fw-bold mb-1">المدير التنفيذي</h6>
-              <p class="fw-bold text-primary mb-2">أ. محمد سليمان الغانم</p>
-              <div style="font-family: 'Brush Script MT', cursive; font-size: 1.6rem; color: #1a365d;">
-                M. Al-Ghanem
-              </div>
-              <small class="text-muted">التوقيع الإلكتروني المعتمد</small>
-            </div>
-            <div class="col-6 text-center">
-              <div class="stamp-box">
-                <span>جمعية النبهانية</span>
-                <span style="font-size: 0.65rem;">للخدمات الإنسانية والاجتماعية</span>
-                <hr style="margin: 2px 0; width: 80%; border-top: 1px solid #1a365d;">
-                <span>الختم الرسمي</span>
-                <span style="font-size: 0.6rem;">الإدارة التنفيذية</span>
-              </div>
-            </div>
-          </div>
-
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">تم وحفظ التغييرات</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة عرض وطباعة الخطاب بالكليشة الرسمية المعتمدة -->
+<div class="modal fade" id="formalLetterModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header no-print">
+        <h5 class="modal-title">معاينة الخطاب الرسمي المعتمد بالكليشة الرسمية</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-3 p-md-4">
+        
+        <!-- الكليشة الرسمية للخطاب -->
+        <div class="official-letter" id="letterPrintArea">
+          <div>
+            <!-- ترويسة الكليشة العلوية -->
+            <div class="letter-header-grid">
+              <div class="org-details text-end">
+                <h6>المملكة العربية السعودية</h6>
+                <h6>جمعية النبهانية للخدمات الإنسانية والاجتماعية</h6>
+                <p>تحت إشراف المركز الوطني لتنمية القطاع غير الربحي</p>
+                <p>ترخيص رقم: <strong>١٢٧</strong></p>
+              </div>
+              <div class="logo-container" id="logoPlacement">
+                <!-- شعار الجمعية المدمج مع الكليشة الرسمية -->
+                <svg class="official-logo-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M50 8C50 8 36 28 36 45C36 56 42 63 50 67C58 63 64 56 64 45C64 28 50 8 50 8Z" fill="#5b9b47" opacity="0.85"/>
+                  <path d="M12 40C12 40 22 66 38 68C48 70 54 62 50 54C42 40 12 40 12 40Z" fill="#4a5f82" opacity="0.9"/>
+                  <path d="M88 40C88 40 78 66 62 68C52 70 46 62 50 54C58 40 88 40 88 40Z" fill="#4d94cd" opacity="0.9"/>
+                  <circle cx="50" cy="80" r="5" fill="#5b9b47"/>
+                  <path d="M18 78C30 92 70 92 82 78" stroke="#5b9b47" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="meta-details text-end pe-2">
+                <div><strong>الموضوع :</strong> <span id="let_subject"></span></div>
+                <div><strong>الـرقـــم :</strong> <span id="let_ref" class="text-danger fw-bold"></span></div>
+                <div><strong>التـاريـخ :</strong> <span id="let_issue_date"></span>هـ</div>
+                <div><strong>المرفقات :</strong> <span id="let_attachments">بدون</span></div>
+              </div>
+            </div>
+
+            <!-- عنوان الخطاب في المنتصف -->
+            <div class="text-center my-3">
+              <h5 class="fw-bold text-decoration-underline" id="let_title">إشعار إداري رسمي</h5>
+            </div>
+
+            <!-- محتوى الخطاب -->
+            <div class="letter-content my-3 fs-6" style="line-height: 1.9;">
+              <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span id="let_emp" class="fw-bold"></span> المحترم/ـة</p>
+              <p class="mb-3"><strong>المسمى الوظيفي:</strong> <span id="let_role"></span></p>
+              <p>السلام عليكم ورحمة الله وبركاته،،،</p>
+              <p id="let_body"></p>
+
+              <!-- جدول التوثيق الزمني المعتمد -->
+              <table class="table table-sm table-bordered text-center my-3">
+                <thead class="table-light">
+                  <tr>
+                    <th>بيان الواقعة والإجراء</th>
+                    <th>اليوم</th>
+                    <th>التاريخ</th>
+                    <th>الوقت</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>توقيت حدوث المخالفة</strong></td>
+                    <td id="let_event_day"></td>
+                    <td id="let_event_date"></td>
+                    <td id="let_event_time"></td>
+                  </tr>
+                  <tr class="table-warning">
+                    <td><strong>توقيت الرصد الفعلي وإصدار الخطاب</strong></td>
+                    <td id="let_audit_day"></td>
+                    <td id="let_audit_date"></td>
+                    <td id="let_audit_time"></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div id="let_notes_box" class="p-2 bg-light border rounded mb-3" style="display:none;">
+                <strong>تفاصيل وملاحظات إضافية:</strong>
+                <div id="let_notes"></div>
+              </div>
+
+              <p>نأمل منكم التقيد والالتزام التام بالتعليمات واللوائح المنظمة للعمل؛ علماً بأن تكرار المخالفة يستوجب تطبيق الإجراءات النظامية التصاعدية المعتمدة في اللائحة التنفيذية للموارد البشرية.</p>
+              <p class="text-center mt-2"><strong>شاكرين لكم حسن تعاونكم واهتمامكم،،،</strong></p>
+            </div>
+
+            <!-- منطقة التوقيع والختم -->
+            <div class="row signature-area align-items-center pt-3">
+              <div class="col-6 text-center">
+                <h6 class="fw-bold mb-1">المدير التنفيذي</h6>
+                <p class="fw-bold text-primary mb-1">أ. محمد سليمان الغانم</p>
+                <div id="letterSignatureBox" style="min-height: 80px;" class="d-flex justify-content-center align-items-center"></div>
+                <small class="text-muted d-block mt-1">التوقيع المعتمد</small>
+              </div>
+              <div class="col-6 text-center">
+                <div id="letterStampBox" style="min-height: 80px;" class="d-flex justify-content-center align-items-center"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- تذييل الكليشة المعتمد للجمعية -->
+          <div class="letter-footer">
+            القصيم - محافظة النبهانية | طريق الملك عبد العزيز | جوال: 0560212414 | هاتف: 0162410016
+          </div>
+        </div>
+
       </div>
       <div class="modal-footer no-print">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-        <button type="button" class="btn btn-success" onclick="window.print()">🖨️ طباعة الخطاب المعتمد (A4)</button>
+        <button type="button" class="btn btn-success" onclick="window.print()">🖨️ طباعة الخطاب بالكليشة الرسمية (A4)</button>
       </div>
     </div>
   </div>
@@ -420,9 +514,7 @@
 
   const daysArabic = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
-  // إدارة الرقم التسلسلي للصادر التراكمي
   let currentSerial = parseInt(localStorage.getItem('last_issue_serial') || '48370001', 10);
-
   function getNextSerialNumber() {
     const num = currentSerial;
     currentSerial++;
@@ -434,7 +526,96 @@
   let tasksData = [];
   let boardData = [];
 
-  function initEmployeeSelects() {
+  const canvas = document.getElementById('sigCanvas');
+  const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#1a365d';
+  }
+  window.addEventListener('resize', resizeCanvas);
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  function startDrawing(e) { isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+  function draw(e) { if (!isDrawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+  function stopDrawing() { isDrawing = false; }
+
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  window.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('touchstart', startDrawing);
+  canvas.addEventListener('touchmove', draw);
+  window.addEventListener('touchend', stopDrawing);
+
+  function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+  
+  function saveDrawnSignature() {
+    const dataUrl = canvas.toDataURL('image/png');
+    localStorage.setItem('saved_signature', dataUrl);
+    alert('تم حفظ التوقيع بنجاح!');
+  }
+
+  function handleFileUpload(e, storageKey) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        localStorage.setItem(storageKey, event.target.result);
+        alert('تم رفع الصورة بنجاح!');
+        updateIdentityViews();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function updateIdentityViews() {
+    const savedSig = localStorage.getItem('saved_signature');
+    const savedStamp = localStorage.getItem('saved_stamp');
+    const savedLogo = localStorage.getItem('saved_custom_logo');
+
+    const sigBox = document.getElementById('letterSignatureBox');
+    if (savedSig) {
+      sigBox.innerHTML = `<img src="${savedSig}" class="signature-img" alt="توقيع المدير">`;
+    } else {
+      sigBox.innerHTML = `<div style="font-family: 'Brush Script MT', cursive; font-size: 1.6rem; color: #1a365d;">M. Al-Ghanem</div>`;
+    }
+
+    const stampBox = document.getElementById('letterStampBox');
+    const previewBox = document.getElementById('stampPreviewArea');
+    if (savedStamp) {
+      const stampHtml = `<img src="${savedStamp}" class="stamp-img" alt="ختم الجمعية">`;
+      stampBox.innerHTML = stampHtml;
+      if (previewBox) previewBox.innerHTML = stampHtml;
+    } else {
+      const defaultStampHtml = `
+        <div class="default-stamp">
+          <span>جمعية النبهانية</span>
+          <span style="font-size: 0.65rem;">للخدمات الإنسانية والاجتماعية</span>
+          <hr style="margin: 2px 0; width: 80%; border-top: 1px solid #1a365d;">
+          <span>الختم الرسمي</span>
+          <span style="font-size: 0.6rem;">الإدارة التنفيذية</span>
+        </div>`;
+      stampBox.innerHTML = defaultStampHtml;
+      if (previewBox) previewBox.innerHTML = defaultStampHtml;
+    }
+
+    if (savedLogo) {
+      document.getElementById('logoPlacement').innerHTML = `<img src="${savedLogo}" class="official-logo-img" alt="شعار الجمعية">`;
+    }
+  }
+
+  function initSystem() {
     const selects = ['v_emp', 't_emp', 'b_emp', 'rep_emp_select'];
     selects.forEach(selId => {
       const el = document.getElementById(selId);
@@ -444,22 +625,23 @@
       });
     });
 
-    // تعيين التاريخ والوقت الافتراضي للمخالفة إلى لحظة الآن
     const now = new Date();
     document.getElementById('v_event_date').value = now.toISOString().split('T')[0];
     document.getElementById('v_event_time').value = now.toTimeString().substring(0, 5);
+
+    setTimeout(() => {
+      resizeCanvas();
+      updateIdentityViews();
+    }, 300);
   }
 
-  // 1. تسجيل المخالفة والإجراء والخطاب
+  // 1. تسجيل المخالفة والإجراء
   document.getElementById('violationForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const nowAudit = new Date(); // وقت الرصد الفعلي وإصدار الخطاب
-    
-    // تاريخ ووقت الواقعة المدخلين
+    const nowAudit = new Date();
     const eventDateStr = document.getElementById('v_event_date').value;
     const eventTimeStr = document.getElementById('v_event_time').value;
     const eventDateObj = new Date(eventDateStr);
-
     const empName = document.getElementById('v_emp').value;
     const empObj = employeesList.find(x => x.name === empName);
 
@@ -470,11 +652,9 @@
       type: document.getElementById('v_type').value,
       level: document.getElementById('v_level').value,
       notes: document.getElementById('v_notes').value,
-      // بيانات الواقعة
       eventDate: eventDateStr,
       eventTime: eventTimeStr,
       eventDay: daysArabic[eventDateObj.getDay()],
-      // بيانات الرصد الفعلي وإصدار الخطاب
       auditDate: nowAudit.toISOString().split('T')[0],
       auditTime: nowAudit.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
       auditDay: daysArabic[nowAudit.getDay()]
@@ -486,7 +666,6 @@
     openLetterModal(item.serial);
     this.reset();
 
-    // إعادة تعيين وقت المخالفة التلقائي
     const current = new Date();
     document.getElementById('v_event_date').value = current.toISOString().split('T')[0];
     document.getElementById('v_event_time').value = current.toTimeString().substring(0, 5);
@@ -505,7 +684,7 @@
           <td>${d.eventDay} ${d.eventDate}<br><small class="text-muted">${d.eventTime}</small></td>
           <td>${d.auditDay} ${d.auditDate}<br><small class="text-muted">${d.auditTime}</small></td>
           <td class="no-print">
-            <button class="btn btn-sm btn-outline-danger" onclick="openLetterModal(${d.serial})">🖨️ عرض الخطاب</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="openLetterModal(${d.serial})">🖨️ عرض الخطاب الرسمي</button>
           </td>
         </tr>`;
     });
@@ -516,29 +695,28 @@
     const item = disciplinaryData.find(x => x.serial === serialNum);
     if (!item) return;
 
-    // ترويسة الخطاب
+    updateIdentityViews();
+
+    // تعبئة حقول الكليشة الرسمية
+    document.getElementById('let_subject').innerText = `${item.level} بشأن (${item.type})`;
     document.getElementById('let_ref').innerText = item.serial;
     document.getElementById('let_issue_date').innerText = item.auditDate;
-    document.getElementById('let_issue_day').innerText = item.auditDay;
+    document.getElementById('let_attachments').innerText = item.notes ? 'مرفق بيان' : 'لا يوجد';
 
-    // بيانات الموظف
     document.getElementById('let_emp').innerText = item.emp;
     document.getElementById('let_role').innerText = item.role;
     document.getElementById('let_title').innerText = `خطاب إشعار إداري: [ ${item.level} ]`;
 
-    // بيانات جدول التوثيق
     document.getElementById('let_event_day').innerText = item.eventDay;
     document.getElementById('let_event_date').innerText = item.eventDate;
     document.getElementById('let_event_time').innerText = item.eventTime;
-
     document.getElementById('let_audit_day').innerText = item.auditDay;
     document.getElementById('let_audit_date').innerText = item.auditDate;
     document.getElementById('let_audit_time').innerText = item.auditTime;
 
-    // صياغة متن الخطاب
     let bodyText = "";
     if (item.level === 'إنذار شفوي') {
-      bodyText = `بناءً على الصلاحيات المخولة لنا نظاماً، وحرصاً على انضباط سير العمل بالجمعية؛ فقد تم توجيه هذا (الإنذار الشفوي الموثق) لسعادتكم نظير رصد مخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})، والتي تم رصدها وإقرارها رسمياً بتاريخ ${item.auditDate}، وتم قيدها في السجل الإداري لعدم تكرارها.`;
+      bodyText = `بناءً على الصلاحيات المخولة لنا نظاماً، وحرصاً على انضباط سير العمل بجمعية النبهانية للخدمات الإنسانية والاجتماعية؛ فقد تم توجيه هذا (الإنذار الشفوي الموثق) لسعادتكم نظير رصد مخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})، والتي تم رصدها وإقرارها رسمياً بتاريخ ${item.auditDate}، وتم قيدها في السجل الإداري لعدم تكرارها.`;
     } else if (item.level === 'مساءلة إدارية') {
       bodyText = `نظراً لمخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})؛ نأمل من سعادتكم توضيح أسباب ذلك وتقديم مبرراتكم الخطية خلال (24 ساعة) من تاريخ هذا الخطاب الصادر برقم (${item.serial}).`;
     } else {
@@ -557,12 +735,11 @@
     modal.show();
   }
 
-  // 2. إدارة المهام
+  // 2. المهام
   document.getElementById('taskForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const empName = document.getElementById('t_emp').value;
     const empObj = employeesList.find(x => x.name === empName);
-
     tasksData.push({
       id: Date.now(),
       emp: empName,
@@ -572,13 +749,12 @@
       proof: '',
       status: 'قيد التنفيذ'
     });
-
     renderTasks();
     this.reset();
   });
 
   function uploadProof(id) {
-    const link = prompt('أدخل رابط إثبات الإنجاز والمستند (Drive / سحابة):');
+    const link = prompt('أدخل رابط إثبات الإنجاز (Drive / سحابة):');
     if (link) {
       const t = tasksData.find(x => x.id === id);
       t.proof = link;
@@ -647,7 +823,6 @@
           </td>
         </tr>`;
     });
-
     const rate = boardData.length ? Math.round((completed / boardData.length) * 100) : 0;
     document.getElementById('boardCompletionRate').innerText = `${rate}%`;
     document.getElementById('boardSummaryCounts').innerText = `المنجز: ${completed} | المتبقي: ${boardData.length - completed} | الإجمالي: ${boardData.length}`;
@@ -745,7 +920,7 @@
     document.getElementById('employeeReportArea').innerHTML = html;
   }
 
-  initEmployeeSelects();
+  initSystem();
   renderEmployeeReport();
 </script>
 </body>
