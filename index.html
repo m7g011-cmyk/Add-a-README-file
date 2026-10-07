@@ -8,7 +8,8 @@
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; color: #1e293b; }
     .card-header { font-weight: bold; }
-    .executive-badge { background-color: #1a365d; color: white; padding: 4px 12px; border-radius: 6px; font-size: 0.9rem; }
+    .executive-badge { background-color: #1a365d; color: white; padding: 4px 12px; border-radius: 6px; font-size: 0.85rem; }
+    .employee-badge { background-color: #0d9488; color: white; padding: 4px 12px; border-radius: 6px; font-size: 0.85rem; }
     
     #sigCanvas {
       border: 2px dashed #94a3b8;
@@ -20,7 +21,7 @@
       height: 160px;
     }
 
-    /* أبعاد وتنسيق ورقة A4 الرسمية للخطاب */
+    /* كليشة ورقة A4 الرسمية للخطابات */
     .official-letter {
       background: #fff;
       border: 1px solid #cbd5e1;
@@ -37,7 +38,6 @@
       position: relative;
     }
 
-    /* الكليشة العلوية الرسمية المتطابقة */
     .letter-header-grid {
       display: grid;
       grid-template-columns: 1.3fr 0.8fr 1fr;
@@ -47,21 +47,13 @@
       margin-bottom: 25px;
     }
     
-    .org-details-box {
-      text-align: right;
-    }
+    .org-details-box { text-align: right; }
     .org-details-box .kingdom { font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
     .org-details-box .org-name { font-size: 0.95rem; font-weight: bold; color: #1a365d; margin-bottom: 4px; }
     .org-details-box .org-sub { font-size: 0.78rem; color: #475569; line-height: 1.4; margin: 0; }
 
-    .logo-container {
-      text-align: center;
-    }
-    .official-logo-img {
-      max-height: 100px;
-      max-width: 110px;
-      object-fit: contain;
-    }
+    .logo-container { text-align: center; }
+    .official-logo-img { max-height: 100px; max-width: 110px; object-fit: contain; }
 
     .meta-details-box {
       text-align: right;
@@ -71,41 +63,13 @@
       line-height: 1.85;
     }
 
-    /* نص ومتن الخطاب */
-    .letter-body-area {
-      flex-grow: 1;
-    }
-    .letter-title {
-      font-size: 1.2rem;
-      font-weight: 800;
-      text-decoration: underline;
-      color: #0f172a;
-      margin-bottom: 20px;
-    }
-    .letter-text {
-      font-size: 0.98rem;
-      line-height: 2;
-      color: #1e293b;
-      text-align: justify;
-    }
+    .letter-title { font-size: 1.2rem; font-weight: 800; text-decoration: underline; color: #0f172a; margin-bottom: 20px; }
+    .letter-text { font-size: 0.98rem; line-height: 2; color: #1e293b; text-align: justify; }
 
-    /* منطقة التوقيع والختم الكبير الطبيعي */
-    .signature-area {
-      margin-top: 30px;
-      padding-top: 15px;
-    }
-    .signature-img {
-      max-height: 120px;
-      max-width: 180px;
-      object-fit: contain;
-    }
+    .signature-area { margin-top: 30px; padding-top: 15px; }
+    .signature-img { max-height: 110px; max-width: 170px; object-fit: contain; }
     
-    /* تكبير حجم الختم ليكون طبيعياً ورسمياً */
-    .stamp-img {
-      width: 165px;
-      height: 165px;
-      object-fit: contain;
-    }
+    .stamp-img { width: 165px; height: 165px; object-fit: contain; }
     .default-stamp-large {
       border: 3.5px double #1a365d;
       border-radius: 50%;
@@ -125,7 +89,6 @@
       line-height: 1.3;
     }
 
-    /* التذييل السفلي المطابق للملف */
     .letter-footer-bar {
       border-top: 2px solid #1a365d;
       padding-top: 12px;
@@ -137,67 +100,93 @@
       line-height: 1.6;
     }
 
-    /* ضبط الطباعة الدقيقة على A4 */
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 0;
-      }
-      body {
-        background-color: #fff !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
+      @page { size: A4 portrait; margin: 0; }
+      body { background-color: #fff !important; padding: 0 !important; margin: 0 !important; }
       body * { visibility: hidden; }
-      #formalLetterModal, #formalLetterModal * { visibility: visible; }
-      #formalLetterModal {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
+      .printable-modal, .printable-modal * { visibility: visible; }
+      .printable-modal { position: absolute; left: 0; top: 0; width: 100%; margin: 0 !important; padding: 0 !important; }
       .modal-dialog { max-width: 100% !important; margin: 0 !important; }
       .modal-content { border: none !important; box-shadow: none !important; }
       .no-print, .btn-close, .modal-footer { display: none !important; }
-      .official-letter {
-        border: none !important;
-        box-shadow: none !important;
-        padding: 20mm 20mm 15mm 20mm !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        min-height: 290mm !important;
-        page-break-after: avoid;
-        page-break-inside: avoid;
-      }
+      .official-letter { border: none !important; box-shadow: none !important; padding: 20mm 20mm 15mm 20mm !important; width: 100% !important; min-height: 290mm !important; }
     }
   </style>
 </head>
-<body class="p-3 p-md-4">
-<div class="container-fluid">
-  
-  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap border-bottom pb-3">
-    <div>
-      <h3 class="text-primary mb-1">جمعية النبهانية للخدمات الإنسانية والاجتماعية</h3>
-      <span class="executive-badge">المدير التنفيذي: أ. محمد سليمان الغانم</span>
+<body class="p-2 p-md-4">
+
+<!-- شاشة تسجيل الدخول واختيار الصلاحية -->
+<div id="loginSection" class="container mt-5" style="max-width: 500px;">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white text-center py-3 rounded-top-4">
+      <h5 class="mb-0">جمعية النبهانية للخدمات الإنسانية والاجتماعية</h5>
+      <small>بوابة المتابعة الإدارية والرقابة التنفيذية</small>
     </div>
-    <div class="no-print mt-2 mt-md-0 d-flex gap-2">
-      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settingsModal">⚙️ إعدادات التوقيع والختم</button>
-      <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">🖨️ طباعة</button>
+    <div class="card-body p-4">
+      <ul class="nav nav-pills nav-fill mb-3" role="tablist">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#directorLogin">المدير التنفيذي</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#employeeLogin">الموظفون</button></li>
+      </ul>
+      
+      <div class="tab-content">
+        <!-- دخول المدير -->
+        <div class="tab-pane fade show active" id="directorLogin">
+          <form id="managerLoginForm">
+            <div class="mb-3">
+              <label class="form-label">اسم المستخدم:</label>
+              <input type="text" id="mgr_user" class="form-control" placeholder="أدخل اسم المستخدم" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">الرمز السري:</label>
+              <input type="password" id="mgr_pass" class="form-control" placeholder="••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2">تسجيل دخول كمدير تنفيذي</button>
+          </form>
+        </div>
+        
+        <!-- دخول الموظف -->
+        <div class="tab-pane fade" id="employeeLogin">
+          <form id="empLoginForm">
+            <div class="mb-3">
+              <label class="form-label">اختر اسم الموظف:</label>
+              <select id="login_emp_select" class="form-select" required></select>
+            </div>
+            <button type="submit" class="btn btn-teal text-white w-100 py-2" style="background-color: #0d9488;">الدخول للبوابة المخصصة للموظف</button>
+          </form>
+        </div>
+      </div>
+      <div id="loginError" class="alert alert-danger mt-3 py-2 text-center" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- الواجهة الرئيسية للنظام بعد تسجيل الدخول -->
+<div id="appSection" class="container-fluid" style="display:none;">
+  
+  <!-- الترويسة وشريط المستخدم الحالي -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap border-bottom pb-3 gap-2">
+    <div>
+      <h4 class="text-primary mb-1">جمعية النبهانية للخدمات الإنسانية والاجتماعية</h4>
+      <div id="userBadgeContainer"></div>
+    </div>
+    <div class="no-print d-flex gap-2 flex-wrap">
+      <button class="btn btn-outline-primary btn-sm" id="btnSettings" data-bs-toggle="modal" data-bs-target="#settingsModal">⚙️ إعدادات التوقيع والختم</button>
+      <button onclick="logout()" class="btn btn-outline-danger btn-sm">🚪 تسجيل الخروج</button>
     </div>
   </div>
 
+  <!-- تبويبات النظام -->
   <ul class="nav nav-pills mb-4 no-print" id="mainTab" role="tablist">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#violations">المساءلات والإنذارات</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tasks">متابعة المهام التنفيذية</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#board">قرارات مجلس الإدارة</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#reports">التقرير التراكمي الشامل</button></li>
+    <li class="nav-item manager-only"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#violations">المساءلات والإنذارات</button></li>
+    <li class="nav-item"><button class="nav-link" id="tabTasksBtn" data-bs-toggle="pill" data-bs-target="#tasks">متابعة المهام والتكليفات</button></li>
+    <li class="nav-item manager-only"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#board">قرارات مجلس الإدارة</button></li>
+    <li class="nav-item"><button class="nav-link" id="tabReportsBtn" data-bs-toggle="pill" data-bs-target="#reports">التقرير التراكمي الشامل</button></li>
   </ul>
 
   <div class="tab-content">
-    <!-- 1. شاشة المخالفات والمساءلات -->
-    <div class="tab-pane fade show active" id="violations">
+    
+    <!-- 1. شاشة المخالفات والمساءلات (المدير فقط) -->
+    <div class="tab-pane fade show active manager-only" id="violations">
       <div class="row">
         <div class="col-md-5 no-print">
           <div class="card mb-3 shadow-sm border-danger">
@@ -264,7 +253,7 @@
                       <th>الإجراء</th>
                       <th>توقيت المخالفة</th>
                       <th>تاريخ الرصد</th>
-                      <th class="no-print">معاينة وطباعة</th>
+                      <th class="no-print">معاينة</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -276,11 +265,12 @@
       </div>
     </div>
 
-    <!-- 2. متابعة المهام -->
+    <!-- 2. متابعة المهام والتكليفات المشتركة -->
     <div class="tab-pane fade" id="tasks">
       <div class="row">
-        <div class="col-md-4 no-print">
-          <div class="card shadow-sm border-primary">
+        <!-- نموذج إسناد المهام (المدير فقط) -->
+        <div class="col-md-4 no-print manager-only">
+          <div class="card shadow-sm border-primary mb-3">
             <div class="card-header bg-primary text-white">تكليف بمهمة جديدة</div>
             <div class="card-body">
               <form id="taskForm">
@@ -289,8 +279,8 @@
                   <select id="t_emp" class="form-select"></select>
                 </div>
                 <div class="mb-2">
-                  <label class="form-label">عنوان المهمة:</label>
-                  <input type="text" id="t_title" class="form-control" required placeholder="وصف المهمة...">
+                  <label class="form-label">عنوان ووصف المهمة:</label>
+                  <textarea id="t_title" class="form-control" rows="2" required placeholder="وصف المهمة المطلوبة بدقة..."></textarea>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">تاريخ التسليم المستهدف:</label>
@@ -301,19 +291,24 @@
             </div>
           </div>
         </div>
-        <div class="col-md-8">
+
+        <div class="col-md-12" id="tasksTableContainer">
           <div class="card shadow-sm">
-            <div class="card-header bg-dark text-white">جدول متابعة المهام والإنجاز</div>
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+              <span id="tasksTableTitle">جدول متابعة المهام والتكليفات</span>
+              <span class="badge bg-secondary" id="tasksTotalCount">0 مهمة</span>
+            </div>
             <div class="card-body p-0">
               <div class="table-responsive">
                 <table class="table table-bordered mb-0 text-center" id="tasksTable">
                   <thead class="table-light">
                     <tr>
-                      <th>المهمة</th>
-                      <th>المكلف</th>
-                      <th>إثبات الإنجاز</th>
+                      <th>رقم المهمة</th>
+                      <th>المهمة وتاريخ الإسناد</th>
+                      <th>الموظف</th>
+                      <th>رد الموظف والمستندات الداعمة</th>
                       <th>الحالة</th>
-                      <th class="no-print">الاعتماد</th>
+                      <th class="no-print">الإجراءات</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -325,8 +320,8 @@
       </div>
     </div>
 
-    <!-- 3. قرارات مجلس الإدارة -->
-    <div class="tab-pane fade" id="board">
+    <!-- 3. قرارات مجلس الإدارة (المدير فقط) -->
+    <div class="tab-pane fade manager-only" id="board">
       <div class="row mb-3">
         <div class="col-md-4 no-print">
           <div class="card shadow-sm border-success">
@@ -381,15 +376,15 @@
       </div>
     </div>
 
-    <!-- 4. التقارير التراكمية -->
+    <!-- 4. التقارير التراكمية الشاملة -->
     <div class="tab-pane fade" id="reports">
       <div class="card shadow-sm">
         <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-          <span>التقرير التراكمي الشامل لأداء والتزام الموظف</span>
-          <button onclick="window.print()" class="btn btn-light btn-sm no-print">🖨️ طباعة ملف الموظف</button>
+          <span>التقرير التراكمي الشامل لأداء والتزام وإنجازات الموظف</span>
+          <button onclick="window.print()" class="btn btn-light btn-sm no-print">🖨️ طباعة التقرير</button>
         </div>
         <div class="card-body">
-          <div class="row mb-3 no-print">
+          <div class="row mb-3 no-print manager-only">
             <div class="col-md-5">
               <label class="form-label fw-bold">اختر الموظف:</label>
               <select id="rep_emp_select" class="form-select" onchange="renderEmployeeReport()"></select>
@@ -399,10 +394,38 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
-<!-- نافذة إعدادات التوقيع والختم -->
+<!-- نافذة رد الموظف على المهمة ورفع المستندات -->
+<div class="modal fade" id="empTaskModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-teal text-white" style="background-color: #0d9488;">
+        <h5 class="modal-title">رفع تقرير الإنجاز والمستندات الداعمة</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="empResponseForm">
+          <input type="hidden" id="emp_task_id">
+          <div class="mb-3">
+            <label class="form-label fw-bold">تفاصيل رد الموظف وإيضاحات الإنجاز:</label>
+            <textarea id="emp_reply_text" class="form-control" rows="3" required placeholder="اكتب تقرير ما تم إنجازه بالتفصيل..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">رابط المستندات الداعمة أو إثبات الإنجاز (Drive / Cloud):</label>
+            <input type="url" id="emp_doc_url" class="form-control" placeholder="https://..." required>
+            <small class="text-muted">ارفع الملف على Google Drive أو أي سحابة وضع الرابط هنا.</small>
+          </div>
+          <button type="submit" class="btn text-white w-100" style="background-color: #0d9488;">إرسال التقرير والمستندات للمدير التنفيذي</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة إعدادات التوقيع والختم والشعار -->
 <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -418,47 +441,43 @@
             <canvas id="sigCanvas"></canvas>
             <div class="d-flex gap-2 my-2">
               <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearSignature()">مسح التوقيع</button>
-              <button type="button" class="btn btn-sm btn-outline-primary" onclick="saveDrawnSignature()">حفظ التوقيع المرسوم</button>
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="saveDrawnSignature()">حفظ التوقيع</button>
             </div>
             <hr>
-            <label class="form-label small fw-bold">أو ارفع صورة التوقيع جاهزة (PNG شفاف):</label>
+            <label class="form-label small fw-bold">أو ارفع صورة التوقيع (PNG شفاف):</label>
             <input type="file" id="sigFileInput" class="form-control form-control-sm" accept="image/*" onchange="handleFileUpload(event, 'saved_signature')">
           </div>
 
           <div class="col-md-6">
             <h6 class="fw-bold text-success mb-2">2. ختم الجمعية الرسمي (حجم كبير معتمد)</h6>
-            <p class="small text-muted mb-2">ارفع صورة الختم الرسمي للجمعية:</p>
             <input type="file" id="stampFileInput" class="form-control form-control-sm mb-3" accept="image/*" onchange="handleFileUpload(event, 'saved_stamp')">
             <div class="p-3 border rounded text-center bg-light">
               <span class="small d-block text-muted mb-2">معاينة الختم المعتمد حالياً:</span>
               <div id="stampPreviewArea" class="d-flex justify-content-center"></div>
             </div>
-            <hr>
-            <h6 class="fw-bold text-dark mb-1">3. شعار الجمعية في الكليشة (اختياري)</h6>
-            <input type="file" id="logoFileInput" class="form-control form-control-sm" accept="image/*" onchange="handleFileUpload(event, 'saved_custom_logo')">
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">تم وحفظ التغييرات</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">حفظ التغييرات</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- نافذة عرض وطباعة ومشاركة الخطاب بالكليشة الرسمية المطابقة -->
-<div class="modal fade" id="formalLetterModal" tabindex="-1" aria-hidden="true">
+<!-- نافذة عرض وطباعة ومشاركة الخطاب الرسمي بالكليشة -->
+<div class="modal fade printable-modal" id="formalLetterModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header no-print">
-        <h5 class="modal-title">معاينة الخطاب الرسمي المعتمد بالكليشة الرسمية</h5>
+        <h5 class="modal-title" id="letterModalHeaderTitle">معاينة الخطاب الرسمي المعتمد</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body p-2 p-md-4">
         
         <div class="official-letter" id="letterPrintArea">
           <div>
-            <!-- ترويسة الكليشة العلوية الرسمية المطابقة تماماً لملف الجمعية -->
+            <!-- ترويسة الكليشة العلوية الرسمية المطابقة لملف الجمعية -->
             <div class="letter-header-grid">
               <div class="org-details-box">
                 <div class="kingdom">المملكة العربية السعودية</div>
@@ -467,15 +486,10 @@
                 <p class="org-sub">لتنمية القطاع غير الربحي ترخيص رقم ١٢٧</p>
               </div>
               <div class="logo-container" id="logoPlacement">
-                <!-- شعار الجمعية الملون والأصلي للجمعية -->
                 <svg class="official-logo-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- الورقة العلوية الخضراء -->
                   <path d="M50 4C50 4 34 26 34 46C34 58 41 65 50 69C59 65 66 58 66 46C66 26 50 4 50 4Z" fill="#71a954" opacity="0.9"/>
-                  <!-- الورقة اليسرى الكحلية -->
                   <path d="M10 38C10 38 20 66 38 69C49 71 55 63 50 54C41 38 10 38 10 38Z" fill="#3b5278" opacity="0.95"/>
-                  <!-- الورقة اليمنى السماوية -->
                   <path d="M90 38C90 38 80 66 62 69C51 71 45 63 50 54C59 38 90 38 90 38Z" fill="#4d91c6" opacity="0.95"/>
-                  <!-- النقطة والخط المنحني السفلي المكمل للشعار -->
                   <circle cx="50" cy="83" r="5.5" fill="#71a954"/>
                   <path d="M16 80C30 96 70 96 84 80" stroke="#71a954" stroke-width="2.2" stroke-linecap="round"/>
                 </svg>
@@ -491,51 +505,29 @@
             <!-- عنوان الخطاب ومتنه -->
             <div class="letter-body-area">
               <div class="text-center">
-                <div class="letter-title" id="let_title">إشعار إداري رسمي</div>
+                <div class="letter-title" id="let_title">خطاب إداري رسمي</div>
               </div>
 
               <div class="letter-text">
                 <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span id="let_emp" class="fw-bold"></span> المحترم/ـة</p>
                 <p class="mb-3"><strong>المسمى الوظيفي:</strong> <span id="let_role"></span></p>
                 <p>السلام عليكم ورحمة الله وبركاته،،،</p>
-                <p id="let_body"></p>
+                <div id="let_body"></div>
 
-                <table class="table table-sm table-bordered text-center my-3">
-                  <thead class="table-light">
-                    <tr>
-                      <th>بيان الواقعة والإجراء</th>
-                      <th>اليوم</th>
-                      <th>التاريخ</th>
-                      <th>الوقت</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>توقيت حدوث المخالفة</strong></td>
-                      <td id="let_event_day"></td>
-                      <td id="let_event_date"></td>
-                      <td id="let_event_time"></td>
-                    </tr>
-                    <tr class="table-warning">
-                      <td><strong>توقيت الرصد الفعلي وإصدار الخطاب</strong></td>
-                      <td id="let_audit_day"></td>
-                      <td id="let_audit_date"></td>
-                      <td id="let_audit_time"></td>
-                    </tr>
-                  </tbody>
-                </table>
+                <!-- جدول التوثيق الزمني (يظهر إما للإنذار أو لإتمام المهمة) -->
+                <div id="let_table_container"></div>
 
                 <div id="let_notes_box" class="p-2 bg-light border rounded mb-3" style="display:none;">
                   <strong>تفاصيل وملاحظات إضافية:</strong>
                   <div id="let_notes"></div>
                 </div>
 
-                <p>نأمل منكم التقيد والالتزام التام بالتعليمات واللوائح المنظمة للعمل؛ علماً بأن تكرار المخالفة يستوجب تطبيق الإجراءات النظامية التصاعدية المعتمدة في اللائحة التنفيذية للموارد البشرية.</p>
+                <p id="let_closing_text">نأمل منكم التقيد والالتزام التام بالتعليمات واللوائح المنظمة للعمل؛ علماً بأن تكرار المخالفة يستوجب تطبيق الإجراءات النظامية التصاعدية المعتمدة في اللائحة التنفيذية للموارد البشرية.</p>
                 <p class="text-center mt-2"><strong>شاكرين لكم حسن تعاونكم واهتمامكم،،،</strong></p>
               </div>
             </div>
 
-            <!-- منطقة التوقيع والختم الكبير الطبيعي -->
+            <!-- منطقة التوقيع والختم الكبير -->
             <div class="row signature-area align-items-center">
               <div class="col-6 text-center">
                 <h6 class="fw-bold mb-1">المدير التنفيذي</h6>
@@ -549,7 +541,7 @@
             </div>
           </div>
 
-          <!-- تذييل الكليشة المطابق تماماً لملف الجمعية الرسمي -->
+          <!-- تذييل الكليشة -->
           <div class="letter-footer-bar">
             القصيم - محافظة النبهانية<br>
             طريق الملك عبد العزيز<br>
@@ -559,7 +551,6 @@
 
       </div>
       
-      <!-- أزرار التحكم: مشاركة شاملة، تنزيل PDF، وطباعة -->
       <div class="modal-footer no-print d-flex justify-content-between flex-wrap gap-2">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
         <div class="d-flex gap-2 flex-wrap">
@@ -580,6 +571,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // قائمة الموظفين الرسمية
   const employeesList = [
     { name: "خليفه علي الحصنان", role: "مدير مشاريع" },
     { name: "طلال عبدالله الحربي", role: "باحث اجتماعي" },
@@ -592,19 +584,131 @@
 
   const daysArabic = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
+  // حالة المستخدم الحالي (المدير أو موظف معين)
+  let currentUser = JSON.parse(sessionStorage.getItem('current_user') || 'null');
+
+  // البيانات المركزية المخزنة
+  let disciplinaryData = JSON.parse(localStorage.getItem('app_disciplinary_data') || '[]');
+  let tasksData = JSON.parse(localStorage.getItem('app_tasks_data') || '[]');
+  let boardData = JSON.parse(localStorage.getItem('app_board_data') || '[]');
+  let currentActiveLetter = null;
+
+  // إدارة الصادر التسلسلي التراكمي
   let currentSerial = parseInt(localStorage.getItem('last_issue_serial') || '48370001', 10);
   function getNextSerialNumber() {
     const num = currentSerial;
     currentSerial++;
     localStorage.setItem('last_issue_serial', currentSerial.toString());
+    saveAllData();
     return num;
   }
 
-  let disciplinaryData = [];
-  let tasksData = [];
-  let boardData = [];
-  let currentActiveLetter = null;
+  // حفظ جميع البيانات بشكل دائم
+  function saveAllData() {
+    localStorage.setItem('app_disciplinary_data', JSON.stringify(disciplinaryData));
+    localStorage.setItem('app_tasks_data', JSON.stringify(tasksData));
+    localStorage.setItem('app_board_data', JSON.stringify(boardData));
+  }
 
+  // تهيئة تسجيل الدخول
+  function initLogin() {
+    const sel = document.getElementById('login_emp_select');
+    sel.innerHTML = '<option value="">-- اختر اسمك من القائمة --</option>';
+    employeesList.forEach(e => {
+      sel.innerHTML += `<option value="${e.name}">${e.name} (${e.role})</option>`;
+    });
+
+    if (currentUser) {
+      showApp();
+    } else {
+      document.getElementById('loginSection').style.display = 'block';
+      document.getElementById('appSection').style.display = 'none';
+    }
+  }
+
+  // معالجة دخول المدير (اسم المستخدم M و الرمز 2998)
+  document.getElementById('managerLoginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const u = document.getElementById('mgr_user').value.trim();
+    const p = document.getElementById('mgr_pass').value.trim();
+
+    if (u.toUpperCase() === 'M' && p === '2998') {
+      currentUser = { type: 'manager', name: 'أ. محمد سليمان الغانم', role: 'المدير التنفيذي' };
+      sessionStorage.setItem('current_user', JSON.stringify(currentUser));
+      showApp();
+    } else {
+      const err = document.getElementById('loginError');
+      err.style.display = 'block';
+      err.innerText = 'اسم المستخدم أو الرمز السري غير صحيح!';
+    }
+  });
+
+  // معالجة دخول الموظف
+  document.getElementById('empLoginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const empName = document.getElementById('login_emp_select').value;
+    if (!empName) return;
+    const empObj = employeesList.find(x => x.name === empName);
+    currentUser = { type: 'employee', name: empName, role: empObj ? empObj.role : '' };
+    sessionStorage.setItem('current_user', JSON.stringify(currentUser));
+    showApp();
+  });
+
+  function logout() {
+    sessionStorage.removeItem('current_user');
+    currentUser = null;
+    location.reload();
+  }
+
+  // إظهار النظام حسب الصلاحيات
+  function showApp() {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('appSection').style.display = 'block';
+
+    const badgeContainer = document.getElementById('userBadgeContainer');
+    if (currentUser.type === 'manager') {
+      badgeContainer.innerHTML = `<span class="executive-badge">الحساب: المدير التنفيذي (${currentUser.name})</span>`;
+      document.querySelectorAll('.manager-only').forEach(el => el.style.display = '');
+      document.getElementById('btnSettings').style.display = '';
+      document.getElementById('tasksTableContainer').className = 'col-md-8';
+      document.getElementById('tasksTableTitle').innerText = 'جدول متابعة المهام والتكليفات (كافة الموظفين)';
+    } else {
+      badgeContainer.innerHTML = `<span class="employee-badge">حساب الموظف: ${currentUser.name} (${currentUser.role})</span>`;
+      document.querySelectorAll('.manager-only').forEach(el => el.style.display = 'none');
+      document.getElementById('btnSettings').style.display = 'none';
+      document.getElementById('tasksTableContainer').className = 'col-md-12';
+      document.getElementById('tasksTableTitle').innerText = `قائمة المهام والتكليفات المسندة إليك: ${currentUser.name}`;
+
+      // تفعيل تبويب المهام للموظف مباشرة
+      const triggerEl = document.getElementById('tabTasksBtn');
+      bootstrap.Tab.getInstance(triggerEl) || new bootstrap.Tab(triggerEl).show();
+    }
+
+    initEmployeeSelects();
+    renderViolations();
+    renderTasks();
+    renderBoard();
+    renderEmployeeReport();
+    updateIdentityViews();
+  }
+
+  function initEmployeeSelects() {
+    const selects = ['v_emp', 't_emp', 'b_emp', 'rep_emp_select'];
+    selects.forEach(selId => {
+      const el = document.getElementById(selId);
+      if (!el) return;
+      el.innerHTML = '';
+      employeesList.forEach(emp => {
+        el.innerHTML += `<option value="${emp.name}">${emp.name} (${emp.role})</option>`;
+      });
+    });
+
+    const now = new Date();
+    document.getElementById('v_event_date').value = now.toISOString().split('T')[0];
+    document.getElementById('v_event_time').value = now.toTimeString().substring(0, 5);
+  }
+
+  // ===================== لوحة التوقيع والرسم =====================
   const canvas = document.getElementById('sigCanvas');
   const ctx = canvas.getContext('2d');
   let isDrawing = false;
@@ -643,6 +747,7 @@
     const dataUrl = canvas.toDataURL('image/png');
     localStorage.setItem('saved_signature', dataUrl);
     alert('تم حفظ التوقيع بنجاح!');
+    updateIdentityViews();
   }
 
   function handleFileUpload(e, storageKey) {
@@ -661,7 +766,6 @@
   function updateIdentityViews() {
     const savedSig = localStorage.getItem('saved_signature');
     const savedStamp = localStorage.getItem('saved_stamp');
-    const savedLogo = localStorage.getItem('saved_custom_logo');
 
     const sigBox = document.getElementById('letterSignatureBox');
     if (savedSig) {
@@ -688,33 +792,9 @@
       stampBox.innerHTML = defaultStampHtml;
       if (previewBox) previewBox.innerHTML = defaultStampHtml;
     }
-
-    if (savedLogo) {
-      document.getElementById('logoPlacement').innerHTML = `<img src="${savedLogo}" class="official-logo-img" alt="شعار الجمعية">`;
-    }
   }
 
-  function initSystem() {
-    const selects = ['v_emp', 't_emp', 'b_emp', 'rep_emp_select'];
-    selects.forEach(selId => {
-      const el = document.getElementById(selId);
-      el.innerHTML = '';
-      employeesList.forEach(emp => {
-        el.innerHTML += `<option value="${emp.name}">${emp.name} (${emp.role})</option>`;
-      });
-    });
-
-    const now = new Date();
-    document.getElementById('v_event_date').value = now.toISOString().split('T')[0];
-    document.getElementById('v_event_time').value = now.toTimeString().substring(0, 5);
-
-    setTimeout(() => {
-      resizeCanvas();
-      updateIdentityViews();
-    }, 300);
-  }
-
-  // 1. تسجيل المخالفة والإجراء
+  // 1. تسجيل المخالفة والإجراء والخطاب
   document.getElementById('violationForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const nowAudit = new Date();
@@ -725,6 +805,7 @@
     const empObj = employeesList.find(x => x.name === empName);
 
     const item = {
+      kind: 'violation',
       serial: getNextSerialNumber(),
       emp: empName,
       role: empObj ? empObj.role : '',
@@ -740,9 +821,10 @@
     };
 
     disciplinaryData.push(item);
+    saveAllData();
     renderViolations();
     renderEmployeeReport();
-    openLetterModal(item.serial);
+    openLetterModal(item.serial, 'violation');
     this.reset();
 
     const current = new Date();
@@ -763,151 +845,153 @@
           <td>${d.eventDay} ${d.eventDate}<br><small class="text-muted">${d.eventTime}</small></td>
           <td>${d.auditDay} ${d.auditDate}<br><small class="text-muted">${d.auditTime}</small></td>
           <td class="no-print">
-            <button class="btn btn-sm btn-outline-danger" onclick="openLetterModal(${d.serial})">🖨️ عرض الخطاب الرسمي</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="openLetterModal(${d.serial}, 'violation')">🖨️ الخطاب</button>
           </td>
         </tr>`;
     });
     document.getElementById('violationsCount').innerText = `${disciplinaryData.length} إجراء`;
   }
 
-  function openLetterModal(serialNum) {
-    const item = disciplinaryData.find(x => x.serial === serialNum);
-    if (!item) return;
-
-    currentActiveLetter = item;
-    updateIdentityViews();
-
-    document.getElementById('let_subject').innerText = `${item.level} بشأن (${item.type})`;
-    document.getElementById('let_ref').innerText = item.serial;
-    document.getElementById('let_issue_date').innerText = item.auditDate;
-    document.getElementById('let_attachments').innerText = item.notes ? 'مرفق بيان' : 'بدون';
-
-    document.getElementById('let_emp').innerText = item.emp;
-    document.getElementById('let_role').innerText = item.role;
-    document.getElementById('let_title').innerText = `خطاب إشعار إداري: [ ${item.level} ]`;
-
-    document.getElementById('let_event_day').innerText = item.eventDay;
-    document.getElementById('let_event_date').innerText = item.eventDate;
-    document.getElementById('let_event_time').innerText = item.eventTime;
-    document.getElementById('let_audit_day').innerText = item.auditDay;
-    document.getElementById('let_audit_date').innerText = item.auditDate;
-    document.getElementById('let_audit_time').innerText = item.auditTime;
-
-    let bodyText = "";
-    if (item.level === 'إنذار شفوي') {
-      bodyText = `بناءً على الصلاحيات المخولة لنا نظاماً، وحرصاً على انضباط سير العمل بجمعية النبهانية للخدمات الإنسانية والاجتماعية؛ فقد تم توجيه هذا (الإنذار الشفوي الموثق) لسعادتكم نظير رصد مخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})، والتي تم رصدها وإقرارها رسمياً بتاريخ ${item.auditDate}، وتم قيدها في السجل الإداري لعدم تكرارها.`;
-    } else if (item.level === 'مساءلة إدارية') {
-      bodyText = `نظراً لمخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})؛ نأمل من سعادتكم توضيح أسباب ذلك وتقديم مبرراتكم الخطية خلال (24 ساعة) من تاريخ هذا الخطاب الصادر برقم (${item.serial}).`;
-    } else {
-      bodyText = `بناءً على التدرج الإداري والمخالفة المرصودة بحقكم المتمثلة في (${item.type}) الواقعة بتاريخ ${item.eventDate}، وحيث سبق إشعاركم نظاماً؛ فقد تقرر توجيه (${item.level}) رسمياً بموجب هذا الخطاب وحفظه في ملف خدمتكم.`;
-    }
-    document.getElementById('let_body').innerText = bodyText;
-
-    if (item.notes && item.notes.trim() !== "") {
-      document.getElementById('let_notes_box').style.display = 'block';
-      document.getElementById('let_notes').innerText = item.notes;
-    } else {
-      document.getElementById('let_notes_box').style.display = 'none';
-    }
-
-    const modal = new bootstrap.Modal(document.getElementById('formalLetterModal'));
-    modal.show();
-  }
-
-  // ===================== نظام المشاركة والتصدير الشامل =====================
-  function shareLetterUniversal() {
-    if (!currentActiveLetter) return;
-    const l = currentActiveLetter;
-    const title = `خطاب إداري رسمي صادر برقم ${l.serial}`;
-    const text = `المملكة العربية السعودية
-جمعية النبهانية للخدمات الإنسانية والاجتماعية
------------------------------------------
-سعادة الزميل/ـة: ${l.emp} (${l.role})
-رقم الصادر: ${l.serial}
-نوع الإجراء: ${l.level}
-نوع المخالفة: ${l.type}
-تاريخ المخالفة: ${l.eventDay} ${l.eventDate} (${l.eventTime})
-تاريخ الرصد والإصدار: ${l.auditDate}
------------------------------------------
-نأمل الاطلاع والالتزام بالأنظمة المنظمة للعمل.
-المدير التنفيذي: أ. محمد سليمان الغانم`;
-
-    // إذا كان المتصفح يدعم المشاركة الأصلية (iOS / Android)
-    if (navigator.share) {
-      navigator.share({
-        title: title,
-        text: text,
-        url: window.location.href
-      }).catch((error) => console.log('تم إلغاء المشاركة'));
-    } else {
-      // بديل مباشر للكمبيوتر لفتح الواتساب
-      const encodedMsg = encodeURIComponent(text);
-      window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
-    }
-  }
-
-  function downloadLetterPDF() {
-    if (!currentActiveLetter) return;
-    const element = document.getElementById('letterPrintArea');
-    const opt = {
-      margin:       [0, 0, 0, 0],
-      filename:     `خطاب_${currentActiveLetter.level}_${currentActiveLetter.emp}_${currentActiveLetter.serial}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
-  }
-
-  // 2. المهام
+  // 2. إدارة وتكليف المهام المشتركة
   document.getElementById('taskForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const empName = document.getElementById('t_emp').value;
     const empObj = employeesList.find(x => x.name === empName);
-    tasksData.push({
+    const now = new Date();
+
+    const newTask = {
       id: Date.now(),
+      taskNumber: 'TSK-' + Math.floor(1000 + Math.random() * 9000),
+      assignedBy: 'أ. محمد سليمان الغانم',
+      assignedDate: now.toISOString().split('T')[0],
+      assignedTime: now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
+      assignedDay: daysArabic[now.getDay()],
       emp: empName,
       role: empObj ? empObj.role : '',
       title: document.getElementById('t_title').value,
       dueDate: document.getElementById('t_due').value || 'غير محدد',
-      proof: '',
-      status: 'قيد التنفيذ'
-    });
+      empReply: '',
+      empReplyDate: '',
+      empReplyTime: '',
+      proofDocUrl: '',
+      status: 'قيد التنفيذ', // قيد التنفيذ -> تم الرد وبانتظار الاعتماد -> تم الإنجاز والمعاينة
+      approvedDate: '',
+      approvedTime: '',
+      approvedSerial: null
+    };
+
+    tasksData.push(newTask);
+    saveAllData();
     renderTasks();
     this.reset();
   });
 
-  function uploadProof(id) {
-    const link = prompt('أدخل رابط إثبات الإنجاز (Drive / سحابة):');
-    if (link) {
-      const t = tasksData.find(x => x.id === id);
-      t.proof = link;
-      renderTasks();
-    }
-  }
-
-  function approveTask(id) {
-    const t = tasksData.find(x => x.id === id);
-    t.status = 'تم الإنجاز';
-    renderTasks();
-    renderEmployeeReport();
-  }
-
   function renderTasks() {
     const tbody = document.querySelector('#tasksTable tbody');
     tbody.innerHTML = '';
-    tasksData.forEach(t => {
+
+    // تصفية المهام: إذا كان الداخل موظف، تظهر فقط مهامه
+    let list = tasksData;
+    if (currentUser && currentUser.type === 'employee') {
+      list = tasksData.filter(t => t.emp === currentUser.name);
+    }
+
+    list.forEach(t => {
+      let statusBadge = '<span class="badge bg-warning text-dark">قيد التنفيذ</span>';
+      if (t.status === 'تم الرد وبانتظار الاعتماد') statusBadge = '<span class="badge bg-info text-dark">تم الرد بانتظار الاعتماد</span>';
+      if (t.status === 'تم الإنجاز') statusBadge = '<span class="badge bg-success">تم الإنجاز ومعتمد ✓</span>';
+
+      let replyHtml = `<small class="text-muted">لم يتم الرد بعد</small>`;
+      if (t.empReply) {
+        replyHtml = `
+          <div class="text-end small">
+            <strong>الرد:</strong> ${t.empReply}<br>
+            <span class="text-muted">بتاريخ: ${t.empReplyDate} (${t.empReplyTime})</span><br>
+            <a href="${t.proofDocUrl}" target="_blank" class="badge bg-primary text-decoration-none mt-1">📄 معاينة المستند الداعم ↗</a>
+          </div>
+        `;
+      }
+
+      let actionsHtml = '';
+      if (currentUser && currentUser.type === 'employee') {
+        if (t.status !== 'تم الإنجاز') {
+          actionsHtml = `<button class="btn btn-sm btn-outline-primary" onclick="openEmpResponseModal(${t.id})">✍️ الرد وإرفاق المستند</button>`;
+        } else {
+          actionsHtml = `<button class="btn btn-sm btn-outline-success" onclick="openLetterModal(${t.approvedSerial}, 'task_completion')">📜 خطاب الإتمام</button>`;
+        }
+      } else {
+        // لوحة المدير
+        if (t.status === 'تم الرد وبانتظار الاعتماد') {
+          actionsHtml = `<button class="btn btn-sm btn-success" onclick="approveTaskCompletion(${t.id})">✓ اعتماد الإنجاز وإصدار الخطاب</button>`;
+        } else if (t.status === 'تم الإنجاز') {
+          actionsHtml = `<button class="btn btn-sm btn-outline-success" onclick="openLetterModal(${t.approvedSerial}, 'task_completion')">🖨️ خطاب الإنجاز المعتمد</button>`;
+        } else {
+          actionsHtml = `<span class="small text-muted">بانتظار رد الموظف</span>`;
+        }
+      }
+
       tbody.innerHTML += `
         <tr>
-          <td class="text-end"><strong>${t.title}</strong><br><small class="text-muted">التسليم: ${t.dueDate}</small></td>
-          <td>${t.emp}<br><small class="text-muted">${t.role}</small></td>
-          <td>${t.proof ? `<a href="${t.proof}" target="_blank" class="btn btn-sm btn-outline-info">معاينة الإثبات ↗</a>` : '<button class="btn btn-sm btn-link" onclick="uploadProof('+t.id+')">+ إضافة إثبات</button>'}</td>
-          <td><span class="badge ${t.status === 'تم الإنجاز' ? 'bg-success' : 'bg-warning text-dark'}">${t.status}</span></td>
-          <td class="no-print">
-            ${t.status !== 'تم الإنجاز' ? `<button class="btn btn-sm btn-success" onclick="approveTask(${t.id})">اعتماد كمنجز ✓</button>` : '<span class="text-success fw-bold">معتمد</span>'}
+          <td><strong class="text-secondary">${t.taskNumber}</strong></td>
+          <td class="text-end">
+            <strong>${t.title}</strong><br>
+            <small class="text-muted">تاريخ التكليف: ${t.assignedDay} ${t.assignedDate} (${t.assignedTime})</small><br>
+            <small class="text-danger">الموعد المستهدف: ${t.dueDate}</small>
           </td>
-        </tr>`;
+          <td><strong>${t.emp}</strong><br><small class="text-muted">${t.role}</small></td>
+          <td>${replyHtml}</td>
+          <td>${statusBadge}</td>
+          <td class="no-print">${actionsHtml}</td>
+        </tr>
+      `;
     });
+
+    document.getElementById('tasksTotalCount').innerText = `${list.length} مهمة`;
+  }
+
+  // فتح نافذة رد الموظف
+  function openEmpResponseModal(taskId) {
+    document.getElementById('emp_task_id').value = taskId;
+    const modal = new bootstrap.Modal(document.getElementById('empTaskModal'));
+    modal.show();
+  }
+
+  // إرسال رد الموظف
+  document.getElementById('empResponseForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const taskId = parseInt(document.getElementById('emp_task_id').value, 10);
+    const t = tasksData.find(x => x.id === taskId);
+    if (!t) return;
+
+    const now = new Date();
+    t.empReply = document.getElementById('emp_reply_text').value;
+    t.proofDocUrl = document.getElementById('emp_doc_url').value;
+    t.empReplyDate = now.toISOString().split('T')[0];
+    t.empReplyTime = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+    t.status = 'تم الرد وبانتظار الاعتماد';
+
+    saveAllData();
+    renderTasks();
+    bootstrap.Modal.getInstance(document.getElementById('empTaskModal')).hide();
+    alert('تم إرسال تقرير الإنجاز والمستندات للمدير التنفيذي بنجاح!');
+    this.reset();
+  });
+
+  // اعتماد المدير للمهمة وإصدار خطاب إنجاز معتمد
+  function approveTaskCompletion(taskId) {
+    const t = tasksData.find(x => x.id === taskId);
+    if (!t) return;
+
+    const now = new Date();
+    t.status = 'تم الإنجاز';
+    t.approvedDate = now.toISOString().split('T')[0];
+    t.approvedTime = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+    t.approvedSerial = getNextSerialNumber();
+
+    saveAllData();
+    renderTasks();
+    renderEmployeeReport();
+    openLetterModal(t.approvedSerial, 'task_completion');
   }
 
   // 3. قرارات المجلس
@@ -920,6 +1004,7 @@
       emp: document.getElementById('b_emp').value,
       status: 'قيد التنفيذ'
     });
+    saveAllData();
     renderBoard();
     this.reset();
   });
@@ -927,6 +1012,7 @@
   function approveBoardDecision(id) {
     const b = boardData.find(x => x.id === id);
     b.status = 'تم الإنجاز';
+    saveAllData();
     renderBoard();
   }
 
@@ -952,19 +1038,25 @@
     document.getElementById('boardSummaryCounts').innerText = `المنجز: ${completed} | المتبقي: ${boardData.length - completed} | الإجمالي: ${boardData.length}`;
   }
 
-  // 4. تقرير الموظف التراكمي
+  // 4. تقرير الموظف التراكمي الشامل
   function renderEmployeeReport() {
-    const selectedEmp = document.getElementById('rep_emp_select').value;
-    const empObj = employeesList.find(x => x.name === selectedEmp);
-    const empViolations = disciplinaryData.filter(d => d.emp === selectedEmp);
+    let targetEmp = "";
+    if (currentUser && currentUser.type === 'employee') {
+      targetEmp = currentUser.name;
+    } else {
+      targetEmp = document.getElementById('rep_emp_select').value || (employeesList[0] ? employeesList[0].name : "");
+    }
+
+    const empObj = employeesList.find(x => x.name === targetEmp);
+    const empViolations = disciplinaryData.filter(d => d.emp === targetEmp);
     const oralCount = empViolations.filter(d => d.level === 'إنذار شفوي').length;
     const writtenCount = empViolations.length - oralCount;
-    const completedTasks = tasksData.filter(t => t.emp === selectedEmp && t.status === 'تم الإنجاز');
+    const completedTasks = tasksData.filter(t => t.emp === targetEmp && t.status === 'تم الإنجاز');
 
     let html = `
       <div class="row align-items-center mb-3">
         <div class="col-md-7">
-          <h4 class="mb-1 text-primary">الموظف: <strong>${selectedEmp}</strong></h4>
+          <h4 class="mb-1 text-primary">سجل الأداء والإنجاز التراكمي: <strong>${targetEmp}</strong></h4>
           <p class="text-muted mb-0">المسمى الوظيفي: <strong>${empObj ? empObj.role : ''}</strong></p>
         </div>
         <div class="col-md-5 text-md-start">
@@ -987,7 +1079,7 @@
         </div>
         <div class="col-md-4">
           <div class="border rounded p-3 text-center bg-light">
-            <h6 class="text-muted">المهام المنجزة المعتمدة</h6>
+            <h6 class="text-muted">إجمالي المهام المنجزة والمعتمدة رسمياً</h6>
             <h2 class="text-success mb-0">${completedTasks.length}</h2>
           </div>
         </div>
@@ -996,14 +1088,18 @@
       <div class="row">
         <div class="col-md-6 mb-3">
           <div class="card h-100 border-success">
-            <div class="card-header bg-success text-white">سجل منجزات الموظف المعتمدة</div>
+            <div class="card-header bg-success text-white">سجل منجزات الموظف المعتمدة من الإدارة التنفيذية</div>
             <div class="card-body">
               <ol class="list-group list-group-numbered list-group-flush">
-                ${completedTasks.map(t => `<li class="list-group-item d-flex justify-content-between align-items-start">
+                ${completedTasks.map(t => `
+                  <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                      <div class="fw-bold">${t.title}</div>${t.proof ? `<a href="${t.proof}" target="_blank" class="small text-primary">معاينة وثيقة الإثبات ↗</a>` : '<small class="text-muted">بدون مرفق</small>'}
+                      <div class="fw-bold">${t.title}</div>
+                      <small class="text-muted d-block">رقم صادر الاعتماد: ${t.approvedSerial} | تاريخ الاعتماد: ${t.approvedDate}</small>${t.proofDocUrl ? `<a href="${t.proofDocUrl}" target="_blank" class="small text-primary">معاينة وثيقة الإثبات ↗</a>` : ''}
                     </div>
-                  </li>`).join('') || '<li class="list-group-item text-muted text-center">لا توجد مهام منجزة حتى الآن</li>'}
+                    <button class="btn btn-sm btn-outline-success" onclick="openLetterModal(${t.approvedSerial}, 'task_completion')">عرض الخطاب</button>
+                  </li>
+                `).join('') || '<li class="list-group-item text-muted text-center">لا توجد منجزات معتمدة حتى الآن</li>'}
               </ol>
             </div>
           </div>
@@ -1020,7 +1116,7 @@
                     <th>الإجراء</th>
                     <th>المخالفة</th>
                     <th>تاريخ المخالفة</th>
-                    <th>تاريخ الرصد والإصدار</th>
+                    <th>تاريخ الرصد</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1044,8 +1140,140 @@
     document.getElementById('employeeReportArea').innerHTML = html;
   }
 
-  initSystem();
-  renderEmployeeReport();
+  // ===================== فتح وعرض الخطابات الرسمية =====================
+  function openLetterModal(serialNum, kind) {
+    updateIdentityViews();
+    let letterData = null;
+
+    if (kind === 'violation') {
+      const item = disciplinaryData.find(x => x.serial === serialNum);
+      if (!item) return;
+      letterData = item;
+      currentActiveLetter = item;
+
+      document.getElementById('let_subject').innerText = `${item.level} بشأن (${item.type})`;
+      document.getElementById('let_ref').innerText = item.serial;
+      document.getElementById('let_issue_date').innerText = item.auditDate;
+      document.getElementById('let_attachments').innerText = item.notes ? 'مرفق بيان' : 'بدون';
+      document.getElementById('let_emp').innerText = item.emp;
+      document.getElementById('let_role').innerText = item.role;
+      document.getElementById('let_title').innerText = `خطاب إشعار إداري: [ ${item.level} ]`;
+
+      let bodyText = "";
+      if (item.level === 'إنذار شفوي') {
+        bodyText = `بناءً على الصلاحيات المخولة لنا نظاماً، وحرصاً على انضباط سير العمل بجمعية النبهانية للخدمات الإنسانية والاجتماعية؛ فقد تم توجيه هذا (الإنذار الشفوي الموثق) لسعادتكم نظير رصد مخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})، والتي تم رصدها وإقرارها رسمياً بتاريخ ${item.auditDate}، وتم قيدها في السجل الإداري لعدم تكرارها.`;
+      } else if (item.level === 'مساءلة إدارية') {
+        bodyText = `نظراً لمخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})؛ نأمل من سعادتكم توضيح أسباب ذلك وتقديم مبرراتكم الخطية خلال (24 ساعة) من تاريخ هذا الخطاب الصادر برقم (${item.serial}).`;
+      } else {
+        bodyText = `بناءً على التدرج الإداري والمخالفة المرصودة بحقكم المتمثلة في (${item.type}) الواقعة بتاريخ ${item.eventDate}، وحيث سبق إشعاركم نظاماً؛ فقد تقرر توجيه (${item.level}) رسمياً بموجب هذا الخطاب وحفظه في ملف خدمتكم.`;
+      }
+      document.getElementById('let_body').innerHTML = `<p>${bodyText}</p>`;
+
+      document.getElementById('let_table_container').innerHTML = `
+        <table class="table table-sm table-bordered text-center my-3">
+          <thead class="table-light">
+            <tr><th>بيان الواقعة والإجراء</th><th>اليوم</th><th>التاريخ</th><th>الوقت</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>توقيت حدوث المخالفة</strong></td><td>${item.eventDay}</td><td>${item.eventDate}</td><td>${item.eventTime}</td></tr>
+            <tr class="table-warning"><td><strong>توقيت الرصد الفعلي وإصدار الخطاب</strong></td><td>${item.auditDay}</td><td>${item.auditDate}</td><td>${item.auditTime}</td></tr>
+          </tbody>
+        </table>
+      `;
+
+      if (item.notes && item.notes.trim() !== "") {
+        document.getElementById('let_notes_box').style.display = 'block';
+        document.getElementById('let_notes').innerText = item.notes;
+      } else {
+        document.getElementById('let_notes_box').style.display = 'none';
+      }
+
+      document.getElementById('let_closing_text').innerText = 'نأمل منكم التقيد والالتزام التام بالتعليمات واللوائح المنظمة للعمل؛ علماً بأن تكرار المخالفة يستوجب تطبيق الإجراءات النظامية التصاعدية المعتمدة في اللائحة التنفيذية للموارد البشرية.';
+    
+    } else if (kind === 'task_completion') {
+      const task = tasksData.find(x => x.approvedSerial === serialNum);
+      if (!task) return;
+      currentActiveLetter = { ...task, serial: task.approvedSerial, level: 'إشعار إتمام مهمة' };
+
+      document.getElementById('let_subject').innerText = `اعتماد إتمام وإنجاز مهمة تنفيذية`;
+      document.getElementById('let_ref').innerText = task.approvedSerial;
+      document.getElementById('let_issue_date').innerText = task.approvedDate;
+      document.getElementById('let_attachments').innerText = task.proofDocUrl ? 'مرفق مستند الإنجاز' : 'بدون';
+      document.getElementById('let_emp').innerText = task.emp;
+      document.getElementById('let_role').innerText = task.role;
+      document.getElementById('let_title').innerText = `خطاب شكر واعتماد إنجاز مهمة تنفيذية`;
+
+      document.getElementById('let_body').innerHTML = `
+        <p>يسر إدارة جمعية النبهانية للخدمات الإنسانية والاجتماعية أن تتقدم لسعادتكم بوافر الشكر والتقدير على جهودكم المبذولة والمتميزة في إنجاز المهمة المسندة إليكم بعنوان:</p>
+        <div class="p-3 bg-light border rounded text-center fw-bold mb-3">${task.title}</div>
+        <p>حيث تم استلام تقريركم ومستنداتكم الداعمة، وتمت مراجعتها واعتماد إتمامها رسمياً وقيدها في السجل التراكمي لمنجزاتكم الوظيفية لدى الجمعية.</p>
+      `;
+
+      document.getElementById('let_table_container').innerHTML = `
+        <table class="table table-sm table-bordered text-center my-3">
+          <thead class="table-light">
+            <tr><th>مرحلة المهمة التنفيذية</th><th>التاريخ</th><th>الوقت</th><th>البيان والتفاصيل</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>إسناد التكليف</strong></td><td>${task.assignedDate}</td><td>${task.assignedTime}</td><td>إسناد من المدير التنفيذي</td></tr>
+            <tr><td><strong>تقديم التقرير والمستندات</strong></td><td>${task.empReplyDate}</td><td>${task.empReplyTime}</td><td>رد الموظف ومرفق الإثبات</td></tr>
+            <tr class="table-success"><td><strong>اعتماد الإنجاز النهائي</strong></td><td>${task.approvedDate}</td><td>${task.approvedTime}</td><td>معتمد رسمياً من الإدارة</td></tr>
+          </tbody>
+        </table>
+      `;
+
+      if (task.empReply) {
+        document.getElementById('let_notes_box').style.display = 'block';
+        document.getElementById('let_notes').innerHTML = `<strong>ملخص إنجاز الموظف:</strong> ${task.empReply}<br>${task.proofDocUrl ? `<a href="${task.proofDocUrl}" target="_blank">رابط وثيقة الإثبات المرفقة ↗</a>` : ''}`;
+      } else {
+        document.getElementById('let_notes_box').style.display = 'none';
+      }
+
+      document.getElementById('let_closing_text').innerText = 'مثمنين لكم هذا العطاء وحرصكم الدائم على تحقيق مستهدفات الجمعية وتطوير أدائها، متمنين لكم دوام التوفيق والنجاح.';
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('formalLetterModal'));
+    modal.show();
+  }
+
+  // مشاركة شاملة
+  function shareLetterUniversal() {
+    if (!currentActiveLetter) return;
+    const l = currentActiveLetter;
+    const title = `خطاب رسمي صادر برقم ${l.serial}`;
+    const text = `المملكة العربية السعودية
+جمعية النبهانية للخدمات الإنسانية والاجتماعية
+-----------------------------------------
+سعادة الزميل/ـة: ${l.emp} (${l.role})
+رقم الصادر: ${l.serial}
+الموضوع: ${document.getElementById('let_subject').innerText}
+تاريخ الصادر: ${document.getElementById('let_issue_date').innerText}
+المدير التنفيذي: أ. محمد سليمان الغانم
+-----------------------------------------`;
+
+    if (navigator.share) {
+      navigator.share({ title: title, text: text, url: window.location.href }).catch(() => {});
+    } else {
+      const encodedMsg = encodeURIComponent(text);
+      window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
+    }
+  }
+
+  function downloadLetterPDF() {
+    if (!currentActiveLetter) return;
+    const element = document.getElementById('letterPrintArea');
+    const opt = {
+      margin: [0, 0, 0, 0],
+      filename: `خطاب_${currentActiveLetter.serial}_${currentActiveLetter.emp}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+
+  // بدء تشغيل النظام
+  initLogin();
 </script>
 </body>
 </html>
