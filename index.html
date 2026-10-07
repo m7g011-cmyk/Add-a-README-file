@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <title>بوابة الرقابة الإدارية - جمعية النبهانية للخدمات الإنسانية والاجتماعية</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
-  <!-- مكتبة تحويل وتنزيل PDF بجودة عالية -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; color: #1e293b; }
     .card-header { font-weight: bold; }
     .executive-badge { background-color: #1a365d; color: white; padding: 4px 12px; border-radius: 6px; font-size: 0.9rem; }
     
@@ -21,81 +20,134 @@
       height: 160px;
     }
 
-    /* تصميم الخطاب الرسمي المعتمد للكليشة */
+    /* أبعاد وتنسيق ورقة A4 الرسمية للخطاب */
     .official-letter {
       background: #fff;
       border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      padding: 40px 45px 30px 45px;
-      margin: auto;
+      width: 100%;
       max-width: 820px;
-      min-height: 1050px;
+      min-height: 1120px;
+      margin: 0 auto;
+      padding: 45px 50px 35px 50px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.06);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 0 15px rgba(0,0,0,0.06);
+      box-sizing: border-box;
       position: relative;
     }
 
+    /* الكليشة العلوية الرسمية المتطابقة */
     .letter-header-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr 1fr;
+      grid-template-columns: 1.3fr 0.8fr 1fr;
       align-items: center;
       border-bottom: 2px solid #1a365d;
       padding-bottom: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
-    .org-details h6 { font-weight: 800; color: #1a365d; margin-bottom: 2px; }
-    .org-details p { font-size: 0.75rem; margin-bottom: 1px; color: #334155; }
+    
+    .org-details-box {
+      text-align: right;
+    }
+    .org-details-box .kingdom { font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
+    .org-details-box .org-name { font-size: 0.95rem; font-weight: bold; color: #1a365d; margin-bottom: 4px; }
+    .org-details-box .org-sub { font-size: 0.78rem; color: #475569; line-height: 1.4; margin: 0; }
 
     .logo-container {
       text-align: center;
     }
     .official-logo-img {
-      max-height: 85px;
-      max-width: 100px;
+      max-height: 100px;
+      max-width: 110px;
       object-fit: contain;
     }
 
-    .meta-details {
-      font-size: 0.82rem;
+    .meta-details-box {
+      text-align: right;
+      padding-right: 15px;
+      font-size: 0.88rem;
       color: #0f172a;
-      line-height: 1.7;
+      line-height: 1.85;
     }
 
-    .letter-footer {
-      border-top: 2px solid #1a365d;
-      padding-top: 10px;
+    /* نص ومتن الخطاب */
+    .letter-body-area {
+      flex-grow: 1;
+    }
+    .letter-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-decoration: underline;
+      color: #0f172a;
+      margin-bottom: 20px;
+    }
+    .letter-text {
+      font-size: 0.98rem;
+      line-height: 2;
+      color: #1e293b;
+      text-align: justify;
+    }
+
+    /* منطقة التوقيع والختم الكبير الطبيعي */
+    .signature-area {
       margin-top: 30px;
-      font-size: 0.8rem;
-      color: #334155;
-      text-align: center;
+      padding-top: 15px;
     }
-
-    .signature-img, .stamp-img {
-      max-height: 110px;
-      max-width: 160px;
+    .signature-img {
+      max-height: 120px;
+      max-width: 180px;
       object-fit: contain;
     }
-
-    .default-stamp {
-      border: 3px double #1a365d;
+    
+    /* تكبير حجم الختم ليكون طبيعياً ورسمياً */
+    .stamp-img {
+      width: 165px;
+      height: 165px;
+      object-fit: contain;
+    }
+    .default-stamp-large {
+      border: 3.5px double #1a365d;
       border-radius: 50%;
-      width: 130px;
-      height: 130px;
+      width: 165px;
+      height: 165px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       color: #1a365d;
-      font-size: 0.75rem;
-      font-weight: bold;
-      transform: rotate(-10deg);
+      font-size: 0.82rem;
+      font-weight: 800;
+      transform: rotate(-8deg);
       margin: auto;
+      box-shadow: 0 0 5px rgba(26,54,93,0.2);
+      line-height: 1.3;
     }
 
+    /* التذييل السفلي المطابق للملف */
+    .letter-footer-bar {
+      border-top: 2px solid #1a365d;
+      padding-top: 12px;
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #334155;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    /* ضبط الطباعة الدقيقة على A4 */
     @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      body {
+        background-color: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
       body * { visibility: hidden; }
       #formalLetterModal, #formalLetterModal * { visibility: visible; }
       #formalLetterModal {
@@ -103,13 +155,22 @@
         left: 0;
         top: 0;
         width: 100%;
-        margin: 0;
-        padding: 0;
+        margin: 0 !important;
+        padding: 0 !important;
       }
       .modal-dialog { max-width: 100% !important; margin: 0 !important; }
       .modal-content { border: none !important; box-shadow: none !important; }
       .no-print, .btn-close, .modal-footer { display: none !important; }
-      .official-letter { border: none !important; box-shadow: none !important; padding: 20px 30px !important; min-height: 100vh; }
+      .official-letter {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 20mm 20mm 15mm 20mm !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 290mm !important;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+      }
     }
   </style>
 </head>
@@ -365,7 +426,7 @@
           </div>
 
           <div class="col-md-6">
-            <h6 class="fw-bold text-success mb-2">2. ختم الجمعية الرسمي</h6>
+            <h6 class="fw-bold text-success mb-2">2. ختم الجمعية الرسمي (حجم كبير معتمد)</h6>
             <p class="small text-muted mb-2">ارفع صورة الختم الرسمي للجمعية:</p>
             <input type="file" id="stampFileInput" class="form-control form-control-sm mb-3" accept="image/*" onchange="handleFileUpload(event, 'saved_stamp')">
             <div class="p-3 border rounded text-center bg-light">
@@ -385,7 +446,7 @@
   </div>
 </div>
 
-<!-- نافذة عرض وطباعة ومشاركة الخطاب بالكليشة الرسمية -->
+<!-- نافذة عرض وطباعة ومشاركة الخطاب بالكليشة الرسمية المطابقة -->
 <div class="modal fade" id="formalLetterModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
@@ -393,28 +454,33 @@
         <h5 class="modal-title">معاينة الخطاب الرسمي المعتمد بالكليشة الرسمية</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body p-3 p-md-4">
+      <div class="modal-body p-2 p-md-4">
         
         <div class="official-letter" id="letterPrintArea">
           <div>
-            <!-- ترويسة الكليشة العلوية الرسمية[span_0](start_span)[span_0](end_span) -->
+            <!-- ترويسة الكليشة العلوية الرسمية المطابقة تماماً لملف الجمعية -->
             <div class="letter-header-grid">
-              <div class="org-details text-end">
-                <h6>المملكة العربية السعودية</h6>
-                <h6>جمعية النبهانية للخدمات الإنسانية والاجتماعية</h6>
-                <p>تحت إشراف المركز الوطني لتنمية القطاع غير الربحي</p>
-                <p>ترخيص رقم: <strong>١٢٧</strong></p>
+              <div class="org-details-box">
+                <div class="kingdom">المملكة العربية السعودية</div>
+                <div class="org-name">جمعية النبهانية للخدمات الإنسانية والاجتماعية</div>
+                <p class="org-sub">تحت إشراف المركز الوطني</p>
+                <p class="org-sub">لتنمية القطاع غير الربحي ترخيص رقم ١٢٧</p>
               </div>
               <div class="logo-container" id="logoPlacement">
+                <!-- شعار الجمعية الملون والأصلي للجمعية -->
                 <svg class="official-logo-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M50 8C50 8 36 28 36 45C36 56 42 63 50 67C58 63 64 56 64 45C64 28 50 8 50 8Z" fill="#5b9b47" opacity="0.85"/>
-                  <path d="M12 40C12 40 22 66 38 68C48 70 54 62 50 54C42 40 12 40 12 40Z" fill="#4a5f82" opacity="0.9"/>
-                  <path d="M88 40C88 40 78 66 62 68C52 70 46 62 50 54C58 40 88 40 88 40Z" fill="#4d94cd" opacity="0.9"/>
-                  <circle cx="50" cy="80" r="5" fill="#5b9b47"/>
-                  <path d="M18 78C30 92 70 92 82 78" stroke="#5b9b47" stroke-width="2" stroke-linecap="round"/>
+                  <!-- الورقة العلوية الخضراء -->
+                  <path d="M50 4C50 4 34 26 34 46C34 58 41 65 50 69C59 65 66 58 66 46C66 26 50 4 50 4Z" fill="#71a954" opacity="0.9"/>
+                  <!-- الورقة اليسرى الكحلية -->
+                  <path d="M10 38C10 38 20 66 38 69C49 71 55 63 50 54C41 38 10 38 10 38Z" fill="#3b5278" opacity="0.95"/>
+                  <!-- الورقة اليمنى السماوية -->
+                  <path d="M90 38C90 38 80 66 62 69C51 71 45 63 50 54C59 38 90 38 90 38Z" fill="#4d91c6" opacity="0.95"/>
+                  <!-- النقطة والخط المنحني السفلي المكمل للشعار -->
+                  <circle cx="50" cy="83" r="5.5" fill="#71a954"/>
+                  <path d="M16 80C30 96 70 96 84 80" stroke="#71a954" stroke-width="2.2" stroke-linecap="round"/>
                 </svg>
               </div>
-              <div class="meta-details text-end pe-2">
+              <div class="meta-details-box">
                 <div><strong>الموضوع :</strong> <span id="let_subject"></span></div>
                 <div><strong>الـرقـــم :</strong> <span id="let_ref" class="text-danger fw-bold"></span></div>
                 <div><strong>التـاريـخ :</strong> <span id="let_issue_date"></span>هـ</div>
@@ -422,86 +488,89 @@
               </div>
             </div>
 
-            <!-- عنوان الخطاب -->
-            <div class="text-center my-3">
-              <h5 class="fw-bold text-decoration-underline" id="let_title">إشعار إداري رسمي</h5>
-            </div>
-
-            <!-- محتوى الخطاب -->
-            <div class="letter-content my-3 fs-6" style="line-height: 1.9;">
-              <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span id="let_emp" class="fw-bold"></span> المحترم/ـة</p>
-              <p class="mb-3"><strong>المسمى الوظيفي:</strong> <span id="let_role"></span></p>
-              <p>السلام عليكم ورحمة الله وبركاته،،،</p>
-              <p id="let_body"></p>
-
-              <table class="table table-sm table-bordered text-center my-3">
-                <thead class="table-light">
-                  <tr>
-                    <th>بيان الواقعة والإجراء</th>
-                    <th>اليوم</th>
-                    <th>التاريخ</th>
-                    <th>الوقت</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>توقيت حدوث المخالفة</strong></td>
-                    <td id="let_event_day"></td>
-                    <td id="let_event_date"></td>
-                    <td id="let_event_time"></td>
-                  </tr>
-                  <tr class="table-warning">
-                    <td><strong>توقيت الرصد الفعلي وإصدار الخطاب</strong></td>
-                    <td id="let_audit_day"></td>
-                    <td id="let_audit_date"></td>
-                    <td id="let_audit_time"></td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div id="let_notes_box" class="p-2 bg-light border rounded mb-3" style="display:none;">
-                <strong>تفاصيل وملاحظات إضافية:</strong>
-                <div id="let_notes"></div>
+            <!-- عنوان الخطاب ومتنه -->
+            <div class="letter-body-area">
+              <div class="text-center">
+                <div class="letter-title" id="let_title">إشعار إداري رسمي</div>
               </div>
 
-              <p>نأمل منكم التقيد والالتزام التام بالتعليمات واللوائح المنظمة للعمل؛ علماً بأن تكرار المخالفة يستوجب تطبيق الإجراءات النظامية التصاعدية المعتمدة في اللائحة التنفيذية للموارد البشرية.</p>
-              <p class="text-center mt-2"><strong>شاكرين لكم حسن تعاونكم واهتمامكم،،،</strong></p>
+              <div class="letter-text">
+                <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span id="let_emp" class="fw-bold"></span> المحترم/ـة</p>
+                <p class="mb-3"><strong>المسمى الوظيفي:</strong> <span id="let_role"></span></p>
+                <p>السلام عليكم ورحمة الله وبركاته،،،</p>
+                <p id="let_body"></p>
+
+                <table class="table table-sm table-bordered text-center my-3">
+                  <thead class="table-light">
+                    <tr>
+                      <th>بيان الواقعة والإجراء</th>
+                      <th>اليوم</th>
+                      <th>التاريخ</th>
+                      <th>الوقت</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>توقيت حدوث المخالفة</strong></td>
+                      <td id="let_event_day"></td>
+                      <td id="let_event_date"></td>
+                      <td id="let_event_time"></td>
+                    </tr>
+                    <tr class="table-warning">
+                      <td><strong>توقيت الرصد الفعلي وإصدار الخطاب</strong></td>
+                      <td id="let_audit_day"></td>
+                      <td id="let_audit_date"></td>
+                      <td id="let_audit_time"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div id="let_notes_box" class="p-2 bg-light border rounded mb-3" style="display:none;">
+                  <strong>تفاصيل وملاحظات إضافية:</strong>
+                  <div id="let_notes"></div>
+                </div>
+
+                <p>نأمل منكم التقيد والالتزام التام بالتعليمات واللوائح المنظمة للعمل؛ علماً بأن تكرار المخالفة يستوجب تطبيق الإجراءات النظامية التصاعدية المعتمدة في اللائحة التنفيذية للموارد البشرية.</p>
+                <p class="text-center mt-2"><strong>شاكرين لكم حسن تعاونكم واهتمامكم،،،</strong></p>
+              </div>
             </div>
 
-            <!-- منطقة التوقيع والختم -->
-            <div class="row signature-area align-items-center pt-3">
+            <!-- منطقة التوقيع والختم الكبير الطبيعي -->
+            <div class="row signature-area align-items-center">
               <div class="col-6 text-center">
                 <h6 class="fw-bold mb-1">المدير التنفيذي</h6>
                 <p class="fw-bold text-primary mb-1">أ. محمد سليمان الغانم</p>
-                <div id="letterSignatureBox" style="min-height: 80px;" class="d-flex justify-content-center align-items-center"></div>
+                <div id="letterSignatureBox" style="min-height: 90px;" class="d-flex justify-content-center align-items-center"></div>
                 <small class="text-muted d-block mt-1">التوقيع المعتمد</small>
               </div>
               <div class="col-6 text-center">
-                <div id="letterStampBox" style="min-height: 80px;" class="d-flex justify-content-center align-items-center"></div>
+                <div id="letterStampBox" style="min-height: 170px;" class="d-flex justify-content-center align-items-center"></div>
               </div>
             </div>
           </div>
 
-          <!-- تذييل الكليشة المعتمد[span_1](start_span)[span_1](end_span) -->
-          <div class="letter-footer">
-            القصيم - محافظة النبهانية | طريق الملك عبد العزيز | جوال: 0560212414 | هاتف: 0162410016
+          <!-- تذييل الكليشة المطابق تماماً لملف الجمعية الرسمي -->
+          <div class="letter-footer-bar">
+            القصيم - محافظة النبهانية<br>
+            طريق الملك عبد العزيز<br>
+            0560212414 | 0162410016
           </div>
         </div>
 
       </div>
       
-      <!-- أزرار التحكم والمشاركة والتصدير الجديدة -->
+      <!-- أزرار التحكم: مشاركة شاملة، تنزيل PDF، وطباعة -->
       <div class="modal-footer no-print d-flex justify-content-between flex-wrap gap-2">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
         <div class="d-flex gap-2 flex-wrap">
-          <button type="button" class="btn btn-success" onclick="shareViaWhatsApp()">
-            💬 مشاركة عبر الواتساب
+          <button type="button" class="btn btn-success" onclick="shareLetterUniversal()">
+            📲 مشاركة الخطاب (واتساب / أعمال / تيليجرام / AirDrop)
           </button>
           <button type="button" class="btn btn-danger" onclick="downloadLetterPDF()">
             📥 حفظ المستند PDF
           </button>
           <button type="button" class="btn btn-primary" onclick="window.print()">
-            🖨️ طباعة ورقية
+            🖨️ طباعة الخطاب الورقي
           </button>
         </div>
       </div>
@@ -534,7 +603,7 @@
   let disciplinaryData = [];
   let tasksData = [];
   let boardData = [];
-  let currentActiveLetter = null; // لتخزين بيانات الخطاب الحالي المفتوح
+  let currentActiveLetter = null;
 
   const canvas = document.getElementById('sigCanvas');
   const ctx = canvas.getContext('2d');
@@ -582,7 +651,7 @@
       const reader = new FileReader();
       reader.onload = function(event) {
         localStorage.setItem(storageKey, event.target.result);
-        alert('تم رفع الصورة بنجاح!');
+        alert('تم حفظ الصورة بنجاح!');
         updateIdentityViews();
       };
       reader.readAsDataURL(file);
@@ -598,7 +667,7 @@
     if (savedSig) {
       sigBox.innerHTML = `<img src="${savedSig}" class="signature-img" alt="توقيع المدير">`;
     } else {
-      sigBox.innerHTML = `<div style="font-family: 'Brush Script MT', cursive; font-size: 1.6rem; color: #1a365d;">M. Al-Ghanem</div>`;
+      sigBox.innerHTML = `<div style="font-family: 'Brush Script MT', cursive; font-size: 1.8rem; color: #1a365d;">M. Al-Ghanem</div>`;
     }
 
     const stampBox = document.getElementById('letterStampBox');
@@ -609,12 +678,12 @@
       if (previewBox) previewBox.innerHTML = stampHtml;
     } else {
       const defaultStampHtml = `
-        <div class="default-stamp">
+        <div class="default-stamp-large">
           <span>جمعية النبهانية</span>
-          <span style="font-size: 0.65rem;">للخدمات الإنسانية والاجتماعية</span>
-          <hr style="margin: 2px 0; width: 80%; border-top: 1px solid #1a365d;">
+          <span style="font-size: 0.75rem;">للخدمات الإنسانية والاجتماعية</span>
+          <hr style="margin: 3px 0; width: 85%; border-top: 1.5px solid #1a365d;">
           <span>الختم الرسمي</span>
-          <span style="font-size: 0.6rem;">الإدارة التنفيذية</span>
+          <span style="font-size: 0.72rem;">الإدارة التنفيذية</span>
         </div>`;
       stampBox.innerHTML = defaultStampHtml;
       if (previewBox) previewBox.innerHTML = defaultStampHtml;
@@ -705,7 +774,7 @@
     const item = disciplinaryData.find(x => x.serial === serialNum);
     if (!item) return;
 
-    currentActiveLetter = item; // حفظ بيانات الخطاب الحالي للمشاركة والتصدير
+    currentActiveLetter = item;
     updateIdentityViews();
 
     document.getElementById('let_subject').innerText = `${item.level} بشأن (${item.type})`;
@@ -745,38 +814,46 @@
     modal.show();
   }
 
-  // ===================== ميزات المشاركة والـ PDF =====================
-
-  // 1. المشاركة عبر الواتساب
-  function shareViaWhatsApp() {
+  // ===================== نظام المشاركة والتصدير الشامل =====================
+  function shareLetterUniversal() {
     if (!currentActiveLetter) return;
     const l = currentActiveLetter;
-    const msg = `*جمعية النبهانية للخدمات الإنسانية والاجتماعية*
-*إشعار إداري رسمي صادر*
----------------------------------------
-*سعادة الزميل/ـة:* ${l.emp} (${l.role})
-*رقم الصادر:* ${l.serial}
-*نوع الإجراء:* ${l.level}
-*المخالفة المرصودة:* ${l.type}
-*تاريخ المخالفة:* ${l.eventDay} ${l.eventDate} (${l.eventTime})
-*تاريخ الرصد والإصدار:* ${l.auditDate}
----------------------------------------
-نأمل الاطلاع والالتزام بالأنظمة المتبعة.
-*المدير التنفيذي: أ. محمد سليمان الغانم*`;
+    const title = `خطاب إداري رسمي صادر برقم ${l.serial}`;
+    const text = `المملكة العربية السعودية
+جمعية النبهانية للخدمات الإنسانية والاجتماعية
+-----------------------------------------
+سعادة الزميل/ـة: ${l.emp} (${l.role})
+رقم الصادر: ${l.serial}
+نوع الإجراء: ${l.level}
+نوع المخالفة: ${l.type}
+تاريخ المخالفة: ${l.eventDay} ${l.eventDate} (${l.eventTime})
+تاريخ الرصد والإصدار: ${l.auditDate}
+-----------------------------------------
+نأمل الاطلاع والالتزام بالأنظمة المنظمة للعمل.
+المدير التنفيذي: أ. محمد سليمان الغانم`;
 
-    const encodedMsg = encodeURIComponent(msg);
-    window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
+    // إذا كان المتصفح يدعم المشاركة الأصلية (iOS / Android)
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: text,
+        url: window.location.href
+      }).catch((error) => console.log('تم إلغاء المشاركة'));
+    } else {
+      // بديل مباشر للكمبيوتر لفتح الواتساب
+      const encodedMsg = encodeURIComponent(text);
+      window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
+    }
   }
 
-  // 2. تنزيل الخطاب PDF مباشرة
   function downloadLetterPDF() {
     if (!currentActiveLetter) return;
     const element = document.getElementById('letterPrintArea');
     const opt = {
-      margin:       [10, 10, 10, 10],
+      margin:       [0, 0, 0, 0],
       filename:     `خطاب_${currentActiveLetter.level}_${currentActiveLetter.emp}_${currentActiveLetter.serial}.pdf`,
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true },
+      html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     html2pdf().set(opt).from(element).save();
