@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بوابة الرقابة الإدارية - جمعية النبهانية للخدمات الإنسانية والاجتماعية</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -19,6 +20,7 @@
       cursor: crosshair;
       width: 100%;
       height: 150px;
+      display: block;
     }
 
     /* كليشة ورقة الخطاب الرسمي A4 المطابقة للجمعية */
@@ -64,24 +66,24 @@
     .letter-title { font-size: 1.15rem; font-weight: 800; text-decoration: underline; color: #0f172a; margin: 15px 0; }
     .letter-text { font-size: 0.95rem; line-height: 1.9; color: #1e293b; text-align: justify; }
 
-    .signature-area { margin-top: 25px; padding-top: 15px; border-top: 1px solid #e2e8f0; }
+    .signature-area { margin-top: 25px; padding-top: 15px; border-top: 1px solid #e2e8f0; break-inside: avoid; }
     .signature-img { max-height: 100px; max-width: 160px; object-fit: contain; }
     
-    .stamp-img { width: 150px; height: 150px; object-fit: contain; }
+    .stamp-img { width: 145px; height: 145px; object-fit: contain; }
     .default-stamp-large {
       border: 3.5px double #1a365d;
       border-radius: 50%;
-      width: 150px;
-      height: 150px;
+      width: 145px;
+      height: 145px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       color: #1a365d;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 800;
-      transform: rotate(-8deg);
+      transform: rotate(-6deg);
       margin: auto;
       box-shadow: 0 0 5px rgba(26,54,93,0.15);
       line-height: 1.25;
@@ -96,6 +98,7 @@
       color: #334155;
       font-weight: 600;
       line-height: 1.5;
+      break-inside: avoid;
     }
 
     /* طباعة A4 دقيقة تضمن عدم انقطاع البيانات */
@@ -212,13 +215,28 @@
                 </div>
                 <div class="mb-2">
                   <label class="form-label">نوع المخالفة المرصودة:</label>
-                  <select id="v_type" class="form-select">
+                  <select id="v_type" class="form-select" onchange="toggleCustomViolationField(this.value)">
                     <option value="تأخير صباحي">تأخير صباحي</option>
                     <option value="غياب بدون عذر">غياب بدون عذر</option>
                     <option value="خروج أثناء الدوام بدون إذن">خروج أثناء الدوام بدون إذن</option>
                     <option value="خروج مبكر بدون إذن">خروج مبكر بدون إذن</option>
                     <option value="مخالفة ضوابط الإجازات">مخالفة ضوابط الإجازات</option>
+                    <option value="عدم إنجاز مهمة">عدم إنجاز مهمة</option>
+                    <option value="عدم إنجاز عمل">عدم إنجاز عمل</option>
+                    <option value="عدم تنفيذ انتداب">عدم تنفيذ انتداب</option>
+                    <option value="عدم حضور اجتماع اللجنة">عدم حضور اجتماع اللجنة</option>
+                    <option value="عدم حضور اجتماع مجلس الإدارة">عدم حضور اجتماع مجلس الإدارة</option>
+                    <option value="تأخير تنفيذ مهمة عمل">تأخير تنفيذ مهمة عمل</option>
+                    <option value="تأخير تنفيذ تقرير">تأخير تنفيذ تقرير</option>
+                    <option value="تأخير رفع تقرير تنفيذ مهمة مكلف بها">تأخير رفع تقرير تنفيذ مهمة مكلف بها</option>
+                    <option value="تأخير تنفيذ قرار مجلس إدارة">تأخير تنفيذ قرار مجلس إدارة</option>
+                    <option value="تأخير تنفيذ مهمة من المدير التنفيذي">تأخير تنفيذ مهمة من المدير التنفيذي</option>
+                    <option value="أخرى">أخرى (كتابة سبب مخصص)</option>
                   </select>
+                </div>
+                <div class="mb-2" id="customViolationBox" style="display: none;">
+                  <label class="form-label text-danger small fw-bold">اكتب المخالفة / السبب المخصص:</label>
+                  <input type="text" id="v_type_custom" class="form-control form-control-sm" placeholder="اكتب وصف المخالفة هنا...">
                 </div>
                 <div class="mb-2">
                   <label class="form-label">نوع الإجراء (تسلسلي نظامي):</label>
@@ -536,7 +554,7 @@
         
         <div class="official-letter" id="letterPrintArea">
           <div>
-            <!-- ترويسة الكليشة العلوية الرسمية المقسمة بدقة[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span) -->
+            <!-- ترويسة الكليشة العلوية الرسمية المقسمة بدقة -->
             <div class="letter-header-grid">
               <div class="org-details-box">
                 <div class="kingdom">المملكة العربية السعودية</div>
@@ -600,7 +618,7 @@
             </div>
           </div>
 
-          <!-- تذييل الكليشة[span_6](start_span)[span_6](end_span)[span_7](start_span)[span_7](end_span) -->
+          <!-- تذييل الكليشة -->
           <div class="letter-footer-bar">
             القصيم - محافظة النبهانية<br>
             طريق الملك عبد العزيز<br>
@@ -658,10 +676,37 @@
     return num;
   }
 
+  function formatHijri(dateObj) {
+    try {
+      const formatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+      });
+      return formatter.format(dateObj);
+    } catch(e) {
+      return dateObj.toISOString().split('T')[0];
+    }
+  }
+
   function saveAllData() {
     localStorage.setItem('app_disciplinary_data', JSON.stringify(disciplinaryData));
     localStorage.setItem('app_tasks_data', JSON.stringify(tasksData));
     localStorage.setItem('app_board_data', JSON.stringify(boardData));
+  }
+
+  function toggleCustomViolationField(val) {
+    const box = document.getElementById('customViolationBox');
+    const input = document.getElementById('v_type_custom');
+    if (val === 'أخرى') {
+      box.style.display = 'block';
+      input.setAttribute('required', 'required');
+      input.focus();
+    } else {
+      box.style.display = 'none';
+      input.removeAttribute('required');
+      input.value = '';
+    }
   }
 
   // ===================== النسخ الاحتياطي واستعادة البيانات =====================
@@ -784,7 +829,7 @@
       document.getElementById('tasksTableTitle').innerText = `قائمة المهام والتكليفات المسندة إليك: ${currentUser.name}`;
 
       const triggerEl = document.getElementById('tabEmpViolationsBtn');
-      new bootstrap.Tab(triggerEl).show();
+      if (triggerEl) new bootstrap.Tab(triggerEl).show();
     }
 
     initEmployeeSelects();
@@ -819,13 +864,16 @@
 
   function resizeCanvas() {
     const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-    ctx.lineWidth = 2.5;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = '#1a365d';
+    if (rect.width > 0) {
+      canvas.width = rect.width;
+      canvas.height = 150;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#1a365d';
+    }
   }
   window.addEventListener('resize', resizeCanvas);
+  document.getElementById('settingsModal').addEventListener('shown.bs.modal', resizeCanvas);
 
   function getPos(e) {
     const rect = canvas.getBoundingClientRect();
@@ -908,18 +956,22 @@
     const empName = document.getElementById('v_emp').value.trim();
     const empObj = employeesList.find(x => x.name === empName);
 
+    const typeSelectVal = document.getElementById('v_type').value;
+    const customTypeVal = document.getElementById('v_type_custom').value.trim();
+    const finalViolationType = (typeSelectVal === 'أخرى' && customTypeVal !== '') ? customTypeVal : typeSelectVal;
+
     const item = {
       kind: 'violation',
       serial: getNextSerialNumber(),
       emp: empName,
       role: empObj ? empObj.role : '',
-      type: document.getElementById('v_type').value,
+      type: finalViolationType,
       level: document.getElementById('v_level').value,
       notes: document.getElementById('v_notes').value,
       eventDate: eventDateStr,
       eventTime: eventTimeStr,
       eventDay: daysArabic[eventDateObj.getDay()],
-      auditDate: nowAudit.toISOString().split('T')[0],
+      auditDate: formatHijri(nowAudit),
       auditTime: nowAudit.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
       auditDay: daysArabic[nowAudit.getDay()]
     };
@@ -931,6 +983,7 @@
     renderEmployeeReport();
     openLetterModal(item.serial, 'violation');
     this.reset();
+    toggleCustomViolationField('');
 
     const current = new Date();
     document.getElementById('v_event_date').value = current.toISOString().split('T')[0];
@@ -996,7 +1049,7 @@
       kind: 'task_assignment',
       serial: taskSerial,
       assignedBy: 'أ. محمد سليمان الغانم',
-      assignedDate: now.toISOString().split('T')[0],
+      assignedDate: formatHijri(now),
       assignedTime: now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
       assignedDay: daysArabic[now.getDay()],
       emp: empName,
@@ -1096,7 +1149,7 @@
     const now = new Date();
     t.empReply = document.getElementById('emp_reply_text').value;
     t.proofDocUrl = document.getElementById('emp_doc_url').value;
-    t.empReplyDate = now.toISOString().split('T')[0];
+    t.empReplyDate = formatHijri(now);
     t.empReplyTime = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
     t.status = 'تم الرد وبانتظار الاعتماد';
 
@@ -1113,7 +1166,7 @@
 
     const now = new Date();
     t.status = 'تم الإنجاز';
-    t.approvedDate = now.toISOString().split('T')[0];
+    t.approvedDate = formatHijri(now);
     t.approvedTime = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
     t.approvedSerial = getNextSerialNumber();
 
@@ -1139,7 +1192,7 @@
       text: document.getElementById('b_text').value,
       emp: empName,
       role: empObj ? empObj.role : '',
-      date: now.toISOString().split('T')[0],
+      date: formatHijri(now),
       time: now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
       day: daysArabic[now.getDay()],
       status: 'قيد التنفيذ'
@@ -1518,17 +1571,7 @@
     const directLetterUrl = `${window.location.origin}${window.location.pathname}#letter-${l.serial}`;
     
     const title = `خطاب إداري رسمي صادر برقم ${l.serial}`;
-    const text = `المملكة العربية السعودية
-جمعية النبهانية للخدمات الإنسانية والاجتماعية
------------------------------------------
-سعادة الزميل/ـة: ${l.emp} (${l.role})
-رقم الصادر: ${l.serial}
-الموضوع: ${document.getElementById('let_subject').innerText}
-تاريخ الصادر: ${document.getElementById('let_issue_date').innerText}
-المدير التنفيذي: أ. محمد سليمان الغانم
------------------------------------------
-يمكنك الاطلاع على مستند الخطاب الرسمي والختم مباشرة عبر الرابط التالي:
-${directLetterUrl}`;
+    const text = `المملكة العربية السعودية\nجمعية النبهانية للخدمات الإنسانية والاجتماعية\n-----------------------------------------\nسعادة الزميل/ـة: ${l.emp} (${l.role})\nرقم الصادر: ${l.serial}\nالموضوع: ${document.getElementById('let_subject').innerText}\nتاريخ الصادر: ${document.getElementById('let_issue_date').innerText}هـ\nالمدير التنفيذي: أ. محمد سليمان الغانم\n-----------------------------------------\nيمكنك الاطلاع على مستند الخطاب الرسمي والختم مباشرة عبر الرابط التالي:\n${directLetterUrl}`;
 
     if (navigator.share) {
       navigator.share({ title: title, text: text, url: directLetterUrl }).catch(() => {});
