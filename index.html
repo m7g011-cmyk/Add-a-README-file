@@ -23,7 +23,6 @@
       display: block;
     }
 
-    /* كليشة ورقة الخطاب الرسمي A4 المطابقة للجمعية */
     .official-letter {
       background: #fff;
       border: 1px solid #cbd5e1;
@@ -101,7 +100,6 @@
       break-inside: avoid;
     }
 
-    /* طباعة A4 دقيقة تضمن عدم انقطاع البيانات */
     @media print {
       @page { size: A4 portrait; margin: 8mm; }
       body { background-color: #fff !important; padding: 0 !important; margin: 0 !important; color: #000 !important; }
@@ -145,7 +143,6 @@
       </ul>
       
       <div class="tab-content">
-        <!-- دخول المدير (M / 2998) -->
         <div class="tab-pane fade show active" id="directorLogin">
           <form id="managerLoginForm">
             <div class="mb-3">
@@ -160,7 +157,6 @@
           </form>
         </div>
         
-        <!-- دخول الموظف -->
         <div class="tab-pane fade" id="employeeLogin">
           <form id="empLoginForm">
             <div class="mb-3">
@@ -209,10 +205,44 @@
             <div class="card-header bg-danger text-white">تسجيل واقعة / إجراء إداري</div>
             <div class="card-body">
               <form id="violationForm">
+                
+                <!-- نوع الإجراء المتسلسل والنظامي المحدث -->
                 <div class="mb-2">
-                  <label class="form-label">الموظف المعني:</label>
-                  <select id="v_emp" class="form-select" required></select>
+                  <label class="form-label fw-bold">نوع الإجراء الإداري:</label>
+                  <select id="v_level" class="form-select border-danger" onchange="handleLevelChange(this.value)">
+                    <option value="إنذار شفوي">إنذار شفوي (أولاً - موثق)</option>
+                    <option value="مساءلة إدارية">مساءلة إدارية خطية</option>
+                    <option value="إنذار كتابي أول">إنذار كتابي أول</option>
+                    <option value="إنذار كتابي ثانٍ">إنذار كتابي ثانٍ</option>
+                    <option value="إنذار كتابي ثالث">إنذار كتابي ثالث</option>
+                    <option value="إنذار كتابي نهائي">إنذار كتابي نهائي</option>
+                    <option value="مخالفة جسيمة">مخالفة جسيمة (إجراء تصعيدي فوري)</option>
+                    <option value="قرار مخالفة جماعية مع الحسم">قرار مخالفة جماعية مع الحسم من الراتب</option>
+                  </select>
                 </div>
+
+                <!-- اختيار الموظف الفردي -->
+                <div class="mb-2" id="singleEmpBox">
+                  <label class="form-label">الموظف المعني:</label>
+                  <select id="v_emp" class="form-select"></select>
+                </div>
+
+                <!-- اختيار الموظفين المتعددين في حالة المخالفة الجماعية -->
+                <div class="mb-2" id="groupEmpBox" style="display: none;">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label text-danger fw-bold mb-0">الموظفون المشمولون بالمخالفة الجماعية:</label>
+                    <button type="button" class="btn btn-sm btn-outline-secondary py-0" onclick="selectAllEmployees()">تحديد الكل</button>
+                  </div>
+                  <div id="groupCheckboxes" class="p-2 border rounded bg-white" style="max-height: 140px; overflow-y: auto;"></div>
+                </div>
+
+                <!-- حقل تفاصيل الحسم المالي عند اختيار المخالفة الجماعية أو الجزاءات -->
+                <div class="mb-2" id="deductionBox" style="display: none;">
+                  <label class="form-label text-danger fw-bold small">مقدار الحسم المعتمد:</label>
+                  <input type="text" id="v_deduction" class="form-control form-control-sm border-danger" placeholder="مثال: حسم أجر يوم واحد / حسم 15% من الراتب">
+                </div>
+
+                <!-- نوع المخالفة -->
                 <div class="mb-2">
                   <label class="form-label">نوع المخالفة المرصودة:</label>
                   <select id="v_type" class="form-select" onchange="toggleCustomViolationField(this.value)">
@@ -234,21 +264,14 @@
                     <option value="أخرى">أخرى (كتابة سبب مخصص)</option>
                   </select>
                 </div>
+
                 <div class="mb-2" id="customViolationBox" style="display: none;">
                   <label class="form-label text-danger small fw-bold">اكتب المخالفة / السبب المخصص:</label>
                   <input type="text" id="v_type_custom" class="form-control form-control-sm" placeholder="اكتب وصف المخالفة هنا...">
                 </div>
-                <div class="mb-2">
-                  <label class="form-label">نوع الإجراء (تسلسلي نظامي):</label>
-                  <select id="v_level" class="form-select">
-                    <option value="إنذار شفوي">إنذار شفوي (أولاً - موثق)</option>
-                    <option value="مساءلة إدارية">مساءلة إدارية</option>
-                    <option value="إنذار كتابي أول">إنذار كتابي أول</option>
-                    <option value="إنذار كتابي نهائي">إنذار كتابي نهائي</option>
-                  </select>
-                </div>
+
                 <div class="row g-2 mb-2 p-2 bg-light border rounded">
-                  <div class="col-12"><small class="text-danger fw-bold">تحديد توقيت حدوث المخالفة الفعلي:</small></div>
+                  <div class="col-12"><small class="text-danger fw-bold">تحديد توقيت حدوث الواقعة الفعلي:</small></div>
                   <div class="col-md-7">
                     <label class="form-label small mb-1">تاريخ المخالفة:</label>
                     <input type="date" id="v_event_date" class="form-control form-control-sm" required>
@@ -258,8 +281,9 @@
                     <input type="time" id="v_event_time" class="form-control form-control-sm" required>
                   </div>
                 </div>
+
                 <div class="mb-3">
-                  <label class="form-label">تفاصيل ومبررات المخالفة:</label>
+                  <label class="form-label">تفاصيل ومبررات المخالفة والتوجيه الإداري:</label>
                   <textarea id="v_notes" class="form-control" rows="2" placeholder="اكتب تفاصيل إضافية إن وجدت..."></textarea>
                 </div>
                 <button type="submit" class="btn btn-danger w-100">توثيق الإجراء وإصدار الخطاب الرسمي</button>
@@ -267,6 +291,7 @@
             </div>
           </div>
         </div>
+
         <div class="col-md-7">
           <div class="card shadow-sm">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
@@ -279,9 +304,9 @@
                   <thead class="table-light">
                     <tr>
                       <th>رقم الصادر</th>
-                      <th>الموظف</th>
+                      <th>الموظف / المعنيون</th>
                       <th>المخالفة</th>
-                      <th>الإجراء</th>
+                      <th>الإجراء الإداري</th>
                       <th>توقيت المخالفة</th>
                       <th>تاريخ الرصد</th>
                       <th class="no-print">معاينة</th>
@@ -554,7 +579,6 @@
         
         <div class="official-letter" id="letterPrintArea">
           <div>
-            <!-- ترويسة الكليشة العلوية الرسمية المقسمة بدقة -->
             <div class="letter-header-grid">
               <div class="org-details-box">
                 <div class="kingdom">المملكة العربية السعودية</div>
@@ -579,19 +603,19 @@
               </div>
             </div>
 
-            <!-- عنوان الخطاب ومتنه -->
             <div class="letter-body-area">
               <div class="text-center">
                 <div class="letter-title" id="let_title">خطاب إداري رسمي</div>
               </div>
 
               <div class="letter-text">
-                <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span id="let_emp" class="fw-bold"></span> المحترم/ـة</p>
-                <p class="mb-2"><strong>المسمى الوظيفي:</strong> <span id="let_role"></span></p>
+                <div id="let_emp_address_block">
+                  <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span id="let_emp" class="fw-bold"></span> المحترم/ـة</p>
+                  <p class="mb-2"><strong>المسمى الوظيفي:</strong> <span id="let_role"></span></p>
+                </div>
                 <p class="mb-2">السلام عليكم ورحمة الله وبركاته،،،</p>
                 <div id="let_body"></div>
 
-                <!-- جدول التوثيق الزمني -->
                 <div id="let_table_container"></div>
 
                 <div id="let_notes_box" class="p-2 bg-light border rounded mb-2" style="display:none;">
@@ -604,7 +628,6 @@
               </div>
             </div>
 
-            <!-- منطقة التوقيع والختم الكبير -->
             <div class="row signature-area align-items-center">
               <div class="col-6 text-center">
                 <h6 class="fw-bold mb-1">المدير التنفيذي</h6>
@@ -618,7 +641,6 @@
             </div>
           </div>
 
-          <!-- تذييل الكليشة -->
           <div class="letter-footer-bar">
             القصيم - محافظة النبهانية<br>
             طريق الملك عبد العزيز<br>
@@ -709,10 +731,30 @@
     }
   }
 
+  function handleLevelChange(val) {
+    const isGroup = (val === 'قرار مخالفة جماعية مع الحسم');
+    document.getElementById('singleEmpBox').style.display = isGroup ? 'none' : 'block';
+    document.getElementById('groupEmpBox').style.display = isGroup ? 'block' : 'none';
+    document.getElementById('deductionBox').style.display = isGroup ? 'block' : 'none';
+
+    if (isGroup) {
+      document.getElementById('v_deduction').setAttribute('required', 'required');
+    } else {
+      document.getElementById('v_deduction').removeAttribute('required');
+      document.getElementById('v_deduction').value = '';
+    }
+  }
+
+  function selectAllEmployees() {
+    const checkboxes = document.querySelectorAll('.emp-group-checkbox');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    checkboxes.forEach(cb => cb.checked = !allChecked);
+  }
+
   // ===================== النسخ الاحتياطي واستعادة البيانات =====================
   function exportBackupData() {
     const backupObj = {
-      version: '2.0',
+      version: '2.1',
       exportDate: new Date().toISOString(),
       last_issue_serial: localStorage.getItem('last_issue_serial') || '48370001',
       saved_signature: localStorage.getItem('saved_signature') || '',
@@ -852,6 +894,20 @@
       });
     });
 
+    // تعبئة قائمة الموظفين للاختيار المتعدد في المخالفات الجماعية
+    const groupDiv = document.getElementById('groupCheckboxes');
+    if (groupDiv) {
+      groupDiv.innerHTML = '';
+      employeesList.forEach((emp, idx) => {
+        groupDiv.innerHTML += `
+          <div class="form-check small mb-1">
+            <input class="form-check-input emp-group-checkbox" type="checkbox" value="${emp.name}" id="eg_${idx}">
+            <label class="form-check-label" for="eg_${idx}">${emp.name} - <span class="text-muted">${emp.role}</span></label>
+          </div>
+        `;
+      });
+    }
+
     const now = new Date();
     document.getElementById('v_event_date').value = now.toISOString().split('T')[0];
     document.getElementById('v_event_time').value = now.toTimeString().substring(0, 5);
@@ -953,20 +1009,43 @@
     const eventDateStr = document.getElementById('v_event_date').value;
     const eventTimeStr = document.getElementById('v_event_time').value;
     const eventDateObj = new Date(eventDateStr);
-    const empName = document.getElementById('v_emp').value.trim();
-    const empObj = employeesList.find(x => x.name === empName);
+    const selectedLevel = document.getElementById('v_level').value;
 
     const typeSelectVal = document.getElementById('v_type').value;
     const customTypeVal = document.getElementById('v_type_custom').value.trim();
     const finalViolationType = (typeSelectVal === 'أخرى' && customTypeVal !== '') ? customTypeVal : typeSelectVal;
 
+    let targetEmpName = "";
+    let targetEmpRole = "";
+    let groupEmployees = [];
+
+    if (selectedLevel === 'قرار مخالفة جماعية مع الحسم') {
+      const checkedBoxes = document.querySelectorAll('.emp-group-checkbox:checked');
+      if (checkedBoxes.length === 0) {
+        alert('فضلاً اختر موظفاً واحداً على الأقل من قائمة المخالفة الجماعية!');
+        return;
+      }
+      checkedBoxes.forEach(cb => {
+        const empObj = employeesList.find(x => x.name === cb.value);
+        groupEmployees.push({ name: cb.value, role: empObj ? empObj.role : '' });
+      });
+      targetEmpName = groupEmployees.map(g => g.name).join('، ');
+      targetEmpRole = "فريق العمل المعني بالمخالفة الجماعية";
+    } else {
+      targetEmpName = document.getElementById('v_emp').value.trim();
+      const empObj = employeesList.find(x => x.name === targetEmpName);
+      targetEmpRole = empObj ? empObj.role : '';
+    }
+
     const item = {
       kind: 'violation',
       serial: getNextSerialNumber(),
-      emp: empName,
-      role: empObj ? empObj.role : '',
+      emp: targetEmpName,
+      role: targetEmpRole,
+      groupEmployees: groupEmployees,
       type: finalViolationType,
-      level: document.getElementById('v_level').value,
+      level: selectedLevel,
+      deductionAmount: document.getElementById('v_deduction').value.trim(),
       notes: document.getElementById('v_notes').value,
       eventDate: eventDateStr,
       eventTime: eventTimeStr,
@@ -984,6 +1063,7 @@
     openLetterModal(item.serial, 'violation');
     this.reset();
     toggleCustomViolationField('');
+    handleLevelChange('إنذار شفوي');
 
     const current = new Date();
     document.getElementById('v_event_date').value = current.toISOString().split('T')[0];
@@ -994,12 +1074,20 @@
     const tbody = document.querySelector('#violationsTable tbody');
     tbody.innerHTML = '';
     disciplinaryData.forEach(d => {
+      let badgeColor = 'bg-danger';
+      if (d.level.includes('شفوي')) badgeColor = 'bg-warning text-dark';
+      else if (d.level.includes('مساءلة')) badgeColor = 'bg-info text-dark';
+      else if (d.level.includes('أول')) badgeColor = 'bg-danger';
+      else if (d.level.includes('ثانٍ')) badgeColor = 'bg-danger';
+      else if (d.level.includes('ثالث') || d.level.includes('نهائي')) badgeColor = 'bg-dark text-white';
+      else if (d.level.includes('جسيمة') || d.level.includes('جماعية')) badgeColor = 'bg-black text-warning border border-warning';
+
       tbody.innerHTML += `
         <tr>
           <td><strong class="text-danger">${d.serial}</strong></td>
           <td class="text-end"><strong>${d.emp}</strong><br><small class="text-muted">${d.role}</small></td>
           <td>${d.type}</td>
-          <td><span class="badge ${d.level.includes('شفوي') ? 'bg-warning text-dark' : 'bg-danger'}">${d.level}</span></td>
+          <td><span class="badge ${badgeColor}">${d.level}</span></td>
           <td>${d.eventDay} ${d.eventDate}<br><small class="text-muted">${d.eventTime}</small></td>
           <td>${d.auditDay} ${d.auditDate}<br><small class="text-muted">${d.auditTime}</small></td>
           <td class="no-print">
@@ -1015,7 +1103,12 @@
     const tbody = document.querySelector('#empPersonalViolationsTable tbody');
     tbody.innerHTML = '';
 
-    const myViolations = disciplinaryData.filter(d => d.emp.trim() === currentUser.name.trim());
+    const myViolations = disciplinaryData.filter(d => {
+      if (d.emp.includes(currentUser.name.trim())) return true;
+      if (d.groupEmployees && d.groupEmployees.some(g => g.name.trim() === currentUser.name.trim())) return true;
+      return false;
+    });
+
     myViolations.forEach(d => {
       tbody.innerHTML += `
         <tr>
@@ -1036,7 +1129,7 @@
     document.getElementById('empViolationsBadge').innerText = `${myViolations.length}`;
   }
 
-  // 2. إسناد المهام مع إصدار خطاب تكليف فوري
+  // 2. إسناد المهام
   document.getElementById('taskForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const empName = document.getElementById('t_emp').value.trim();
@@ -1176,7 +1269,7 @@
     openLetterModal(t.approvedSerial, 'task_completion');
   }
 
-  // 3. قرارات المجلس مع إصدار خطاب تكليف فوري
+  // 3. قرارات المجلس
   document.getElementById('boardForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const empName = document.getElementById('b_emp').value.trim();
@@ -1238,7 +1331,7 @@
     document.getElementById('boardSummaryCounts').innerText = `المنجز: ${completed} | المتبقي: ${boardData.length - completed} | الإجمالي: ${boardData.length}`;
   }
 
-  // 4. التقرير التراكمي الشامل (للموظف والمدير)
+  // 4. التقرير التراكمي الشامل
   function renderEmployeeReport() {
     let targetEmp = "";
     if (currentUser && currentUser.type === 'employee') {
@@ -1249,9 +1342,16 @@
     }
 
     const empObj = employeesList.find(x => x.name.trim() === targetEmp);
-    const empViolations = disciplinaryData.filter(d => d.emp.trim() === targetEmp);
+    const empViolations = disciplinaryData.filter(d => {
+      if (d.emp.includes(targetEmp)) return true;
+      if (d.groupEmployees && d.groupEmployees.some(g => g.name.trim() === targetEmp)) return true;
+      return false;
+    });
+
     const oralCount = empViolations.filter(d => d.level === 'إنذار شفوي').length;
-    const writtenCount = empViolations.length - oralCount;
+    const severeCount = empViolations.filter(d => d.level === 'مخالفة جسيمة' || d.level === 'قرار مخالفة جماعية مع الحسم').length;
+    const writtenCount = empViolations.length - oralCount - severeCount;
+
     const empTasks = tasksData.filter(t => t.emp.trim() === targetEmp);
     const completedTasks = empTasks.filter(t => t.status === 'تم الإنجاز');
     const empBoardDecisions = boardData.filter(b => b.emp.trim() === targetEmp);
@@ -1276,8 +1376,14 @@
         </div>
         <div class="col-md-3">
           <div class="border rounded p-3 text-center bg-light">
-            <h6 class="text-muted small">الإنذارات الخطية</h6>
+            <h6 class="text-muted small">الإنذارات الخطية (1 - 2 - 3)</h6>
             <h3 class="text-danger mb-0">${writtenCount}</h3>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="border rounded p-3 text-center bg-light">
+            <h6 class="text-muted small">المخالفات الجسيمة والحسم</h6>
+            <h3 class="text-dark mb-0">${severeCount}</h3>
           </div>
         </div>
         <div class="col-md-3">
@@ -1286,16 +1392,9 @@
             <h3 class="text-success mb-0">${completedTasks.length} <small class="text-muted fs-6">/ ${empTasks.length}</small></h3>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="border rounded p-3 text-center bg-light">
-            <h6 class="text-muted small">قرارات المجلس المسندة</h6>
-            <h3 class="text-primary mb-0">${empBoardDecisions.length}</h3>
-          </div>
-        </div>
       </div>
 
       <div class="row">
-        <!-- سجل المنجزات والمهام والقرارات -->
         <div class="col-md-6 mb-3">
           <div class="card h-100 border-success">
             <div class="card-header bg-success text-white">سجل التكليفات والمنجزات المعتمدة</div>
@@ -1332,7 +1431,6 @@
           </div>
         </div>
 
-        <!-- سجل الإنذارات والمساءلات -->
         <div class="col-md-6 mb-3">
           <div class="card h-100 border-danger">
             <div class="card-header bg-danger text-white">سجل الإجراءات والمساءلات الصادرة</div>
@@ -1399,19 +1497,58 @@
       document.getElementById('let_ref').innerText = item.serial;
       document.getElementById('let_issue_date').innerText = item.auditDate;
       document.getElementById('let_attachments').innerText = item.notes ? 'مرفق بيان' : 'بدون';
-      document.getElementById('let_emp').innerText = item.emp;
-      document.getElementById('let_role').innerText = item.role;
       document.getElementById('let_title').innerText = `خطاب إشعار إداري: [ ${item.level} ]`;
 
+      // تخصيص ديباجة المخاطبة (فردي أو جماعي)
+      const addressBlock = document.getElementById('let_emp_address_block');
+      if (item.level === 'قرار مخالفة جماعية مع الحسم') {
+        let membersListHtml = '';
+        if (item.groupEmployees && item.groupEmployees.length > 0) {
+          membersListHtml = item.groupEmployees.map(e => `• ${e.name} (${e.role})`).join('<br>');
+        } else {
+          membersListHtml = item.emp;
+        }
+        addressBlock.innerHTML = `
+          <p class="mb-1"><strong>سعادة الزملاء والمنسوبين المعنيين بالقرار:</strong></p>
+          <div class="p-2 mb-2 bg-light border rounded small">${membersListHtml}</div>
+        `;
+      } else {
+        addressBlock.innerHTML = `
+          <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span class="fw-bold">${item.emp}</span> المحترم/ـة</p>
+          <p class="mb-2"><strong>المسمى الوظيفي:</strong> <span>${item.role}</span></p>
+        `;
+      }
+
+      // صياغة متن الخطاب بناءً على نوع الإجراء
       let bodyText = "";
       if (item.level === 'إنذار شفوي') {
         bodyText = `بناءً على الصلاحيات المخولة لنا نظاماً، وحرصاً على انضباط سير العمل بجمعية النبهانية للخدمات الإنسانية والاجتماعية؛ فقد تم توجيه هذا (الإنذار الشفوي الموثق) لسعادتكم نظير رصد مخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})، والتي تم رصدها وإقرارها رسمياً بتاريخ ${item.auditDate}، وتم قيدها في السجل الإداري لعدم تكرارها.`;
       } else if (item.level === 'مساءلة إدارية') {
-        bodyText = `نظراً لمخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})؛ نأمل من سعادتكم توضيح أسباب ذلك وتقديم مبرراتكم الخطية خلال (24 ساعة) من تاريخ هذا الخطاب الصادر برقم (${item.serial}).`;
-      } else {
-        bodyText = `بناءً على التدرج الإداري والمخالفة المرصودة بحقكم المتمثلة في (${item.type}) الواقعة بتاريخ ${item.eventDate}، وحيث سبق إشعاركم نظاماً؛ فقد تقرر توجيه (${item.level}) رسمياً بموجب هذا الخطاب وحفظه في ملف خدمتكم.`;
+        bodyText = `نظراً لرصد مخالفة (${item.type}) الواقعة في يوم ${item.eventDay} الموافق ${item.eventDate} عند الساعة (${item.eventTime})؛ نأمل من سعادتكم توضيح أسباب ذلك وتقديم مبرراتكم الخطية خلال (24 ساعة) من تاريخ استلام هذا الخطاب الصادر برقم (${item.serial}).`;
+      } else if (item.level === 'إنذار كتابي أول') {
+        bodyText = `نظراً لمخالفة ضوابط وتعليمات العمل والمتمثلة في (${item.type})، وحيث سبق لفت نظركم؛ نفيدكم بصدور هذا (الإنذار الكتابي الأول) بحقكم مع قيده في ملفكم الإداري، آملين تلافي ذلك مستقبلاً.`;
+      } else if (item.level === 'إنذار كتابي ثانٍ') {
+        bodyText = `إشارة إلى سوابق الإنذار الصادرة بحقكم، وحيث استمر التقصير المرصود والمتمثل في (${item.type})؛ فقد تقرر بموجب الصلاحيات توجيه هذا (الإنذار الكتابي الثاني)، ونؤكد أن استمرار التهاون يعرضكم للمساءلة والجزاءات المغلظة المنصوص عليها نظاماً.`;
+      } else if (item.level === 'إنذار كتابي ثالث') {
+        bodyText = `بناءً على تكرار المخالفة المتمثلة في (${item.type}) للمرة الثالثة وعدم الاستجابة للتوجيهات السابقة؛ فقد صدر بحقكم هذا (الإنذار الكتابي الثالث)، ويعد هذا الإجراء مرحلة ما قبل الإجراءات النهائية وحسم المستحقات وفق لائحة الجزاءات.`;
+      } else if (item.level === 'إنذار كتابي نهائي') {
+        bodyText = `نظراً لعدم امتثالكم للتنبيهات والإنذارات الخطية المتكررة واستمرار مخالفة (${item.type})؛ فقد تقرر رسمياً إصدار هذا (الإنذار الكتابي النهائي). ونحيطكم علماً بأن ارتكاب أي مخالفة لاحقة سيترتب عليه تطبيق الجزاءات القصوى وإنهاء العلاقة العمالية وفق المقتضى النظامي.`;
+      } else if (item.level === 'مخالفة جسيمة') {
+        bodyText = `نظراً لثبوت ارتكابكم واقعة تعد من المخالفات الجسيمة المخلة بانتظام العمل ومصلحة الجمعية والمتمثلة في (${item.type}) في يوم ${item.eventDay} الموافق ${item.eventDate}؛ فقد تقرر إثبات المخالفة وتوجيه هذا الخطاب المغلظ وقيده فوراً في سجلك الوظيفي لإحالته للجنة المختصة لإيقاع العقوبة والجزاء النظامي الرادع.`;
+      } else if (item.level === 'قرار مخالفة جماعية مع الحسم') {
+        bodyText = `نظراً للمخالفة المشتركة المرتكبة من قبل المنسوبين الموضحين أعلاه والمتمثلة في (${item.type}) في يوم ${item.eventDay} الموافق ${item.eventDate}، والتي أثرت سلباً على سير العمل التشغيلي للجمعية؛ وبناءً على الصلاحيات المخولة للإدارة التنفيذية، فقد تقرر رسمياً: **(اعتماد مخالفة جماعية مع إقرار حسم مالي قدره: ${item.deductionAmount})** على كل من شملهم هذا القرار، وإحالة نسخة منه للإدارة المالية والمحاسب لتنفيذه وحسمه من مسير الرواتب المعتمد.`;
       }
+
       document.getElementById('let_body').innerHTML = `<p>${bodyText}</p>`;
+
+      let tableRows = `
+        <tr><td><strong>توقيت حدوث المخالفة</strong></td><td>${item.eventDay}</td><td>${item.eventDate}</td><td>${item.eventTime}</td></tr>
+        <tr class="table-warning"><td><strong>توقيت الرصد الفعلي وإصدار الخطاب</strong></td><td>${item.auditDay}</td><td>${item.auditDate}</td><td>${item.auditTime}</td></tr>
+      `;
+
+      if (item.deductionAmount) {
+        tableRows += `<tr class="table-danger"><td><strong>العقوبة المالية المعتمدة</strong></td><td colspan="3" class="fw-bold text-danger">${item.deductionAmount}</td></tr>`;
+      }
 
       document.getElementById('let_table_container').innerHTML = `
         <table class="table table-sm table-bordered text-center my-3">
@@ -1419,8 +1556,7 @@
             <tr><th>بيان الواقعة والإجراء</th><th>اليوم</th><th>التاريخ</th><th>الوقت</th></tr>
           </thead>
           <tbody>
-            <tr><td><strong>توقيت حدوث المخالفة</strong></td><td>${item.eventDay}</td><td>${item.eventDate}</td><td>${item.eventTime}</td></tr>
-            <tr class="table-warning"><td><strong>توقيت الرصد الفعلي وإصدار الخطاب</strong></td><td>${item.auditDay}</td><td>${item.auditDate}</td><td>${item.auditTime}</td></tr>
+            ${tableRows}
           </tbody>
         </table>
       `;
@@ -1432,7 +1568,7 @@
         document.getElementById('let_notes_box').style.display = 'none';
       }
 
-      document.getElementById('let_closing_text').innerText = 'نأمل منكم التقيد والالتزام التام بالتعليمات واللوائح المنظمة للعمل؛ علماً بأن تكرار المخالفة يستوجب تطبيق الإجراءات النظامية التصاعدية المعتمدة في اللائحة التنفيذية للموارد البشرية.';
+      document.getElementById('let_closing_text').innerText = 'نؤكد على ضرورة التقيد التام والالتزام الصارم بالتعليمات واللوائح المنظمة للعمل بالجمعية وعدم تكرار ذلك مستقبلاً.';
     
     } else if (kind === 'task_assignment') {
       const task = tasksData.find(x => x.serial === serialNum);
@@ -1443,8 +1579,10 @@
       document.getElementById('let_ref').innerText = task.serial;
       document.getElementById('let_issue_date').innerText = task.assignedDate;
       document.getElementById('let_attachments').innerText = 'خطة المهمة';
-      document.getElementById('let_emp').innerText = task.emp;
-      document.getElementById('let_role').innerText = task.role;
+      document.getElementById('let_emp_address_block').innerHTML = `
+        <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span class="fw-bold">${task.emp}</span> المحترم/ـة</p>
+        <p class="mb-2"><strong>المسمى الوظيفي:</strong> <span>${task.role}</span></p>
+      `;
       document.getElementById('let_title').innerText = `خطاب تكليف بمهمة تنفيذية`;
 
       document.getElementById('let_body').innerHTML = `
@@ -1480,8 +1618,10 @@
       document.getElementById('let_ref').innerText = decision.serial;
       document.getElementById('let_issue_date').innerText = decision.date;
       document.getElementById('let_attachments').innerText = 'محضر المجلس';
-      document.getElementById('let_emp').innerText = decision.emp;
-      document.getElementById('let_role').innerText = decision.role;
+      document.getElementById('let_emp_address_block').innerHTML = `
+        <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span class="fw-bold">${decision.emp}</span> المحترم/ـة</p>
+        <p class="mb-2"><strong>المسمى الوظيفي:</strong> <span>${decision.role}</span></p>
+      `;
       document.getElementById('let_title').innerText = `خطاب إسناد قرار مجلس الإدارة`;
 
       document.getElementById('let_body').innerHTML = `
@@ -1517,8 +1657,10 @@
       document.getElementById('let_ref').innerText = task.approvedSerial;
       document.getElementById('let_issue_date').innerText = task.approvedDate;
       document.getElementById('let_attachments').innerText = task.proofDocUrl ? 'مرفق مستند الإنجاز' : 'بدون';
-      document.getElementById('let_emp').innerText = task.emp;
-      document.getElementById('let_role').innerText = task.role;
+      document.getElementById('let_emp_address_block').innerHTML = `
+        <p class="mb-1"><strong>سعادة المكرم/ـة:</strong> <span class="fw-bold">${task.emp}</span> المحترم/ـة</p>
+        <p class="mb-2"><strong>المسمى الوظيفي:</strong> <span>${task.role}</span></p>
+      `;
       document.getElementById('let_title').innerText = `خطاب شكر واعتماد إنجاز مهمة تنفيذية`;
 
       document.getElementById('let_body').innerHTML = `
@@ -1571,7 +1713,7 @@
     const directLetterUrl = `${window.location.origin}${window.location.pathname}#letter-${l.serial}`;
     
     const title = `خطاب إداري رسمي صادر برقم ${l.serial}`;
-    const text = `المملكة العربية السعودية\nجمعية النبهانية للخدمات الإنسانية والاجتماعية\n-----------------------------------------\nسعادة الزميل/ـة: ${l.emp} (${l.role})\nرقم الصادر: ${l.serial}\nالموضوع: ${document.getElementById('let_subject').innerText}\nتاريخ الصادر: ${document.getElementById('let_issue_date').innerText}هـ\nالمدير التنفيذي: أ. محمد سليمان الغانم\n-----------------------------------------\nيمكنك الاطلاع على مستند الخطاب الرسمي والختم مباشرة عبر الرابط التالي:\n${directLetterUrl}`;
+    const text = `المملكة العربية السعودية\nجمعية النبهانية للخدمات الإنسانية والاجتماعية\n-----------------------------------------\nالمعني بالخطاب: ${l.emp} (${l.role})\nرقم الصادر: ${l.serial}\nالموضوع: ${document.getElementById('let_subject').innerText}\nتاريخ الصادر: ${document.getElementById('let_issue_date').innerText}هـ\nالمدير التنفيذي: أ. محمد سليمان الغانم\n-----------------------------------------\nيمكنك الاطلاع على مستند الخطاب الرسمي والختم مباشرة عبر الرابط التالي:\n${directLetterUrl}`;
 
     if (navigator.share) {
       navigator.share({ title: title, text: text, url: directLetterUrl }).catch(() => {});
@@ -1586,7 +1728,7 @@
     const element = document.getElementById('letterPrintArea');
     const opt = {
       margin: [6, 6, 6, 6],
-      filename: `خطاب_${currentActiveLetter.serial}_${currentActiveLetter.emp}.pdf`,
+      filename: `خطاب_${currentActiveLetter.serial}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
